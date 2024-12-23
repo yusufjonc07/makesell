@@ -21,6 +21,9 @@ class m241223_075036_create_invoice_table extends Migration
             'number'=>$this->integer()->notNull(),
             'status'=>$this->smallInteger()->notNull(),
         ]);
+
+        $this->addForeignKey('fk-invoice-customer', 'invoice', 'customer_id', 'customer', 'cusomer_id', 'CASCADE', 'CASCADE');
+        
     }
 
     /**
@@ -28,6 +31,9 @@ class m241223_075036_create_invoice_table extends Migration
      */
     public function safeDown()
     {
+
+        $this->dropForeignKey('fk-invoice-customer', 'invoice');
+
         $this->dropTable('{{%invoice}}');
     }
 }
