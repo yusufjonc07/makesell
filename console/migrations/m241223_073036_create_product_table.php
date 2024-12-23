@@ -14,13 +14,13 @@ class m241223_073036_create_product_table extends Migration
     {
         $this->createTable('{{%product}}', [
             'id' => $this->primaryKey(),
-            'name'=>$this->string(),
-            'price'=>$this->money(),
+            'name'=>$this->string()->unique()->notNull(),
+            'price'=>$this->money()->notNull(),
             'description'=>$this->text(),
             'created_at' => $this->timestamp(),
             'updated_at' => $this->timestamp(),
-            'remind_value' => $this->double(2),
-            'measurement' => $this->string(),
+            'remind_value' => $this->double(2)->notNull(),
+            'measurement' => $this->string()->notNull(),
         ]);
     }
 
