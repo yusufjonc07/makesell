@@ -20,6 +20,8 @@ class m241223_075036_create_invoice_table extends Migration
             'updated_at' => $this->timestamp(),
             'number'=>$this->integer()->notNull(),
             'status'=>$this->smallInteger()->notNull(),
+            'address'=>$this->string()->notNull(),
+            'comment'=>$this->string()->notNull(),
         ]);
 
         $this->addForeignKey('fk-invoice-customer', 'invoice', 'customer_id', 'customer', 'cusomer_id', 'CASCADE', 'CASCADE');
