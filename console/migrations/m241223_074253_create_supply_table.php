@@ -20,6 +20,8 @@ class m241223_074253_create_supply_table extends Migration
             'updated_at'=>$this->timestamp()->notNull(),
             'price'=>$this->money()->notNull(),
         ]);
+
+        $this->addForeignKey('fk-supply-product_id', 'supply', 'product_id', 'product', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**
@@ -27,6 +29,9 @@ class m241223_074253_create_supply_table extends Migration
      */
     public function safeDown()
     {
+
+        $this->dropForeignKey('fk-supply-product_id', 'supply');
+
         $this->dropTable('{{%supply}}');
     }
 }
