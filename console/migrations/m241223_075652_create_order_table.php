@@ -22,7 +22,6 @@ class m241223_075652_create_order_table extends Migration
             'created_at'=>$this->timestamp(),
             'updated_at'=>$this->timestamp(),
         ]);
-        
     }
 
     /**
