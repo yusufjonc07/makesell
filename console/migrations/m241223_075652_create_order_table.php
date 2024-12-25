@@ -22,6 +22,10 @@ class m241223_075652_create_order_table extends Migration
             'created_at'=>$this->timestamp(),
             'updated_at'=>$this->timestamp(),
         ]);
+
+        $this->addForeignKey('fk-order-product_id', 'order', 'product_id', 'product', 'id', 'CASCADE', 'CASCADE');
+
+        
     }
 
     /**
@@ -29,6 +33,8 @@ class m241223_075652_create_order_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-order-product_id', 'order');
+
         $this->dropTable('{{%order}}');
     }
 }

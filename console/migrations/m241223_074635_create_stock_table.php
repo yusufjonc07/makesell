@@ -30,7 +30,7 @@ class m241223_074635_create_stock_table extends Migration
     public function safeDown()
     {
 
-        $this->dropForeignKey('fk-stock-product_id', 'supply');
+        $this->dropForeignKey('fk-stock-product_id', 'stock');
 
         $this->dropTable('{{%stock}}');
     }
