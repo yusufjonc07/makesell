@@ -24,7 +24,7 @@ class m241223_075036_create_invoice_table extends Migration
             'comment'=>$this->string()->notNull(),
         ]);
 
-        $this->addForeignKey('fk-invoice-customer', 'invoice', 'customer_id', 'customer', 'cusomer_id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-invoice-customer', 'invoice', 'customer_id', 'customer', 'id', 'CASCADE', 'CASCADE');
         
     }
 
