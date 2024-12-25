@@ -19,7 +19,7 @@ class m241225_060346_create_ingredient_table extends Migration
             'qty'=>$this->double()->notNull(),
         ]);
 
-        $this->addForeignKey('fk-ingredient-recipe_id', 'ingredient', 'recipe_id', 'recipe  ', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-ingredient-recipe_id', 'ingredient', 'recipe_id', 'recipe', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('fk-ingredient-product_id', 'ingredient', 'product_id', 'product', 'id', 'CASCADE', 'CASCADE');
 
     }
