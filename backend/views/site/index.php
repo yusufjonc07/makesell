@@ -1,10 +1,17 @@
 <?php
 
+use yii\helpers\Url;
+use dosamigos\chartjs\ChartJs;
+
 /** @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
+
+
+
+    <!-- 
 
     <div class="jumbotron text-center bg-transparent">
         <h1 class="display-4">Congratulations!</h1>
@@ -12,42 +19,449 @@ $this->title = 'My Yii Application';
         <p class="lead">You have successfully created your Yii-powered application.</p>
 
         <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+    </div> -->
+
+    <div class="container pt-4">
+        <!-- Section: Main chart -->
+        <section class="mb-4">
+            <div class="card">
+                <div class="card-header py-3">
+                    <h5 class="mb-0 text-center"><strong>Statistics</strong></h5>
+                </div>
+                <div class="card-body">
+                    <?= ChartJs::widget([
+                        'type' => 'bar',
+                        'options' => [
+                            'width' => 400,
+                            'height' => 200,
+                        ],
+                        'data' => [
+                            'labels' => ["January", "February", "March", "April", "May", "June", "July"],
+                            'datasets' => [
+                                [
+                                    'label' => "Production",
+                                    'backgroundColor' => "rgba(179,181,198,0.2)",
+                                    'borderColor' => "rgb(56, 63, 123)",
+                                    'pointBackgroundColor' => "rgba(179,181,198,1)",
+                                    'pointBorderColor' => "#fff",
+                                    'pointHoverBackgroundColor' => "#fff",
+                                    'pointHoverBorderColor' => "rgba(179,181,198,1)",
+                                    'data' => [65, 59, 90, 81, 56, 55, 40]
+                                ],
+                                [
+                                    'label' => "Sales",
+                                    'backgroundColor' => "rgba(85, 164, 81, 0.55)",
+                                    'borderColor' => "rgb(58, 126, 93)",
+                                    'pointBackgroundColor' => "rgba(85, 164, 81, 0.55)",
+                                    'pointBorderColor' => "#fff",
+                                    'pointHoverBackgroundColor' => "#fff",
+                                    'pointHoverBorderColor' => "rgba(255,99,132,1)",
+                                    'data' => [28, 48, 40, 19, 96, 27, 100]
+                                ],
+                            ]
+                        ]
+                    ]);
+                    ?>
+                </div>
+            </div>
+        </section>
+        <!-- Section: Main chart -->
+
+        <!--Section: Sales Performance KPIs-->
+        <section class="mb-4">
+            <div class="card">
+                <div class="card-header text-center py-3">
+                    <h5 class="mb-0 text-center">
+                        <strong>Sales Performance KPIs</strong>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Product Detail Views</th>
+                                    <th scope="col">Unique Purchases</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Product Revenue</th>
+                                    <th scope="col">Avg. Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Value</th>
+                                    <td>18,492</td>
+                                    <td>228</td>
+                                    <td>350</td>
+                                    <td>$4,787.64</td>
+                                    <td>$13.68</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Percentage change</th>
+                                    <td>
+                                        <span class="text-danger">
+                                            <i class="fas fa-caret-down me-1"></i><span>-48.8%%</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success">
+                                            <i class="fas fa-caret-up me-1"></i><span>14.0%</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success">
+                                            <i class="fas fa-caret-up me-1"></i><span>46.4%</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success">
+                                            <i class="fas fa-caret-up me-1"></i><span>29.6%</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-danger">
+                                            <i class="fas fa-caret-down me-1"></i><span>-11.5%</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Absolute change</th>
+                                    <td>
+                                        <span class="text-danger">
+                                            <i class="fas fa-caret-down me-1"></i><span>-17,654</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success">
+                                            <i class="fas fa-caret-up me-1"></i><span>28</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success">
+                                            <i class="fas fa-caret-up me-1"></i><span>111</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-success">
+                                            <i class="fas fa-caret-up me-1"></i><span>$1,092.72</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-danger">
+                                            <i class="fas fa-caret-down me-1"></i><span>$-1.78</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Section: Sales Performance KPIs-->
+
+        <!--Section: Minimal statistics cards-->
+        <section>
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas fa-pencil-alt text-info fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3>278</h3>
+                                    <p class="mb-0">New Posts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="far fa-comment-alt text-warning fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3>156</h3>
+                                    <p class="mb-0">New Comments</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas fa-chart-line text-success fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3>64.89 %</h3>
+                                    <p class="mb-0">Bounce Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas fa-map-marker-alt text-danger fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3>423</h3>
+                                    <p class="mb-0">Total Visits</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-danger">278</h3>
+                                    <p class="mb-0">New Projects</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-rocket text-danger fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-success">156</h3>
+                                    <p class="mb-0">New Clients</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="far fa-user text-success fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-warning">64.89 %</h3>
+                                    <p class="mb-0">Conversion Rate</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-chart-pie text-warning fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-info">423</h3>
+                                    <p class="mb-0">Support Tickets</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="far fa-life-ring text-info fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-info">278</h3>
+                                    <p class="mb-0">New Posts</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-book-open text-info fa-3x"></i>
+                                </div>
+                            </div>
+                            <div class="px-md-1">
+                                <div class="progress mt-3 mb-1 rounded" style="height: 7px">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-warning">156</h3>
+                                    <p class="mb-0">New Comments</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="far fa-comments text-warning fa-3x"></i>
+                                </div>
+                            </div>
+                            <div class="px-md-1">
+                                <div class="progress mt-3 mb-1 rounded" style="height: 7px">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 35%"
+                                        aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-success">64.89 %</h3>
+                                    <p class="mb-0">Bounce Rate</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-mug-hot text-success fa-3x"></i>
+                                </div>
+                            </div>
+                            <div class="px-md-1">
+                                <div class="progress mt-3 mb-1 rounded" style="height: 7px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 60%"
+                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div>
+                                    <h3 class="text-danger">423</h3>
+                                    <p class="mb-0">Total Visits</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-map-signs text-danger fa-3x"></i>
+                                </div>
+                            </div>
+                            <div class="px-md-1">
+                                <div class="progress mt-3 mb-1 rounded" style="height: 7px">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 40%"
+                                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Section: Minimal statistics cards-->
+
+        <!--Section: Statistics with subtitles-->
+        <section>
+            <div class="row">
+                <div class="col-xl-6 col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between p-md-1">
+                                <div class="d-flex flex-row">
+                                    <div class="align-self-center">
+                                        <i class="fas fa-pencil-alt text-info fa-3x me-4"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Total Posts</h4>
+                                        <p class="mb-0">Monthly blog posts</p>
+                                    </div>
+                                </div>
+                                <div class="align-self-center">
+                                    <h2 class="h1 mb-0">18,000</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between p-md-1">
+                                <div class="d-flex flex-row">
+                                    <div class="align-self-center">
+                                        <i class="far fa-comment-alt text-warning fa-3x me-4"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Total Comments</h4>
+                                        <p class="mb-0">Monthly blog posts</p>
+                                    </div>
+                                </div>
+                                <div class="align-self-center">
+                                    <h2 class="h1 mb-0">84,695</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between p-md-1">
+                                <div class="d-flex flex-row">
+                                    <div class="align-self-center">
+                                        <h2 class="h1 mb-0 me-4">$76,456.00</h2>
+                                    </div>
+                                    <div>
+                                        <h4>Total Sales</h4>
+                                        <p class="mb-0">Monthly Sales Amount</p>
+                                    </div>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="far fa-heart text-danger fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between p-md-1">
+                                <div class="d-flex flex-row">
+                                    <div class="align-self-center">
+                                        <h2 class="h1 mb-0 me-4">$36,000.00</h2>
+                                    </div>
+                                    <div>
+                                        <h4>Total Cost</h4>
+                                        <p class="mb-0">Monthly Cost</p>
+                                    </div>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-wallet text-success fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Section: Statistics with subtitles-->
     </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
-</div>

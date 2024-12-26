@@ -1,18 +1,17 @@
 <?php
 
-use common\widgets\ProfileView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\Customer $model */
+/** @var backend\models\Stock $model */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Customers'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Stocks'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="customer-view">
+<div class="stock-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -26,21 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
-            'email:email',
-            'phone',
-            'balance',
-            'status',
+            'product_id',
+            'qty',
             'created_at',
             'updated_at',
+            'price',
         ],
     ]) ?>
-
-
 
 </div>

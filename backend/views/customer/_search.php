@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
+  
     <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'name') ?>
@@ -25,15 +26,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'balance') ?>
 
-    <?php // echo $form->field($model, 'status') ?>
 
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <div class="form-group">
+    <div class="form-group mt-2">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::a(Yii::t('app', 'Reset'), ['index'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

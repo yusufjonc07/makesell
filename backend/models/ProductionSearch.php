@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Customer;
+use backend\models\Production;
 
 /**
- * CustomerSearch represents the model behind the search form of `backend\models\Customer`.
+ * ProductionSearch represents the model behind the search form of `backend\models\Production`.
  */
-class CustomerSearch extends Customer
+class ProductionSearch extends Production
 {
     /**
      * {@inheritdoc}
@@ -17,13 +17,11 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
-            [['name', 'email', 'phone', 'created_at', 'updated_at'], 'safe'],
-            [['balance'], 'number'],
+            [['id', 'recipe_id', 'product_id', 'user_id'], 'integer'],
+            [['qty', 'price'], 'number'],
+            [['created_at', 'updated_at'], 'safe'],
         ];
     }
-
-
 
     /**
      * {@inheritdoc}
@@ -32,10 +30,6 @@ class CustomerSearch extends Customer
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
-    }
-
-    public function getFilterCount(){
-        return Customer::find()->count();
     }
 
     /**
@@ -47,15 +41,12 @@ class CustomerSearch extends Customer
      */
     public function search($params)
     {
-        $query = Customer::find();
+        $query = Production::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 20,
-            ],
         ]);
 
         $this->load($params);
@@ -69,15 +60,14 @@ class CustomerSearch extends Customer
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'balance' => $this->balance,
-            'status' => $this->status,
+            'recipe_id' => $this->recipe_id,
+            'product_id' => $this->product_id,
+            'user_id' => $this->user_id,
+            'qty' => $this->qty,
+            'price' => $this->price,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }
