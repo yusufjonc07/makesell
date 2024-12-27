@@ -1,5 +1,8 @@
 <?php
 
+use yii\bootstrap5\BootstrapAsset;
+use yii\bootstrap5\BootstrapPluginAsset;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -46,7 +49,17 @@ return [
                 
             ],
         ],
-       
+        'assetManager' => [
+        'bundles' => [
+            'yii\bootstrap\BootstrapAsset' => [
+                'class'=> BootstrapAsset::class
+            ],
+            'yii\bootstrap\BootstrapPluginAsset' => [
+                'class'=> BootstrapPluginAsset::class
+            ],
+          
+        ],
+    ],
     ],
     'params' => $params,
 ];

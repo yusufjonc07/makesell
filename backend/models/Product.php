@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ * @property string $image
  * @property float $price
  * @property string|null $description
  * @property string $created_at
@@ -42,6 +43,8 @@ class Product extends \yii\db\ActiveRecord
             [['name', 'price', 'remind_value', 'measurement'], 'required'],
             [['price', 'remind_value'], 'number'],
             [['description'], 'string'],
+            [['image'], 'file', 'extensions' => 'png,jpg,jpeg,webp', 'checkExtensionByMimeType'=>false, 'skipOnEmpty' => false],
+    [["file"], "headerCheck"],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'measurement'], 'string', 'max' => 255],
             [['name'], 'unique'],

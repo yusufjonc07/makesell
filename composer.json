@@ -18,20 +18,12 @@
     "source": "https://github.com/yiisoft/yii2"
   },
   "minimum-stability": "stable",
-  "scripts": {
-    "post-install-cmd": [
-      "@composer run-script post-install-cmd --working-dir=vendor/exocet/yii2-bootstrap-material-design"
-    ],
-    "post-update-cmd": [
-      "@composer run-script post-update-cmd --working-dir=vendor/exocet/yii2-bootstrap-material-design"
-    ]
-  },
+  
   "require": {
     "php": ">=7.4.0",
     "yiisoft/yii2": "~2.0.45",
     "yiisoft/yii2-bootstrap5": "~2.0.2",
     "yiisoft/yii2-symfonymailer": "~2.0.3",
-    "exocet/yii2-bootstrap-material-design": "^2.4",
     "2amigos/yii2-chartjs-widget": "~2.0",
     "kartik-v/yii2-widget-select2": "dev-master"
   },
