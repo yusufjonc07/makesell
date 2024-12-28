@@ -44,7 +44,6 @@ class Product extends \yii\db\ActiveRecord
             [['price', 'remind_value'], 'number'],
             [['description'], 'string'],
             [['image'], 'file', 'extensions' => 'png,jpg,jpeg,webp', 'checkExtensionByMimeType'=>false, 'skipOnEmpty' => false],
-    [["file"], "headerCheck"],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'measurement'], 'string', 'max' => 255],
             [['name'], 'unique'],
