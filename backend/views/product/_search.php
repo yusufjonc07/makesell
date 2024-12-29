@@ -15,26 +15,21 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'price') ?>
-
-    <?= $form->field($model, 'description') ?>
-
-    <?= $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'remind_value') ?>
-
-    <?php // echo $form->field($model, 'measurement') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'name') ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'price') ?>
+        </div>
+        <div class="col-md-4  d-flex align-items-end gap-2">
+            <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        </div>
     </div>
+
+
+
 
     <?php ActiveForm::end(); ?>
 

@@ -2,20 +2,18 @@
 
 namespace backend\controllers;
 
-use backend\models\Ingredient;
-use backend\models\Product;
+use backend\models\Customer;
+use backend\models\Order;
+use backend\models\OrderSearch;
 use backend\models\ProductSearch;
-use backend\models\Recipe;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
- * ProductController implements the CRUD actions for Product model.
+ * OrderController implements the CRUD actions for Order model.
  */
-class ProductController extends Controller
+class OrderController extends Controller
 {
     /**
      * @inheritDoc
@@ -36,14 +34,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Lists all Product models.
+     * Lists all Order models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
-
+        $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -53,62 +50,54 @@ class ProductController extends Controller
     }
 
     /**
-     * Displays a single Product model.
+     * Displays a single Order model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-
-        $recipesProvider = new ActiveDataProvider([
-            'query' => $this->findModel($id)
-            ->getRecipes()
-            ->with(['ingredients', 'ingredients.product']),
-        ]);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'recipesProvider' => $recipesProvider,
         ]);
     }
 
     /**
-     * Creates a new Product model.
+     * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($redirect_to_production = false)
+    public function actionCreate($customer_id=null)
     {
-        $model = new Product();
 
+
+        $customer = Customer::findOne($customer_id);
 
         if ($this->request->isPost) {
-
-
-
+            $model = new Order();
             if ($model->load($this->request->post())) {
-                $model->image = UploadedFile::getInstance($model, 'image');
-                if ($model->upload() && $model->save()) {
-                    if ($redirect_to_production) {
-                        \Yii::$app->session->setFlash('success', 'Product created successfully. Now you can create a production.');
-                        return $this->redirect(['/production/create', 'product_id' => $model->id]);
-                    }
-                    return $this->redirect(['view', 'id' => $model->id]);
-
+                if($model->save()){
+                    \Yii::$app->session->setFlash('success', 'Order created successfully');
+                    return $this->redirect($this->request->referrer);
                 }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
+        $searchModel = new ProductSearch();
+
+        $queryParams =  array_merge($this->request->queryParams, ["ProductSearch"=>["isTradable"=>true]]);
+
+        $dataProvider = $searchModel->search($queryParams);
+
         return $this->render('create', [
-            'model' => $model,
+            'customer' => $customer,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Updates an existing Product model.
+     * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -128,7 +117,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Deletes an existing Product model.
+     * Deletes an existing Order model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -142,15 +131,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Product the loaded model
+     * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne(['id' => $id])) !== null) {
+        if (($model = Order::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

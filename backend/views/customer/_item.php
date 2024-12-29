@@ -57,7 +57,7 @@ use yii\bootstrap5\Html;
         </h6>
     </div>
     <div class="card-footer d-flex gap-2" style="justify-content:space-between">
-        <?= Html::a(Yii::t('app', 'Trade'), ['/order/create', 'id' => $model->id], ['class' => 'btn btn-primary w-100']) ?>
+        <?= Html::a(Yii::t('app', 'Trade'), ['/order/create', 'customer_id' => $model->id], ['class' => 'btn btn-primary w-100']) ?>
         <?= Html::a(Yii::t('app', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-secondary w-100']) ?>
     </div>
 </div>

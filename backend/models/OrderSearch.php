@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Product;
+use backend\models\Order;
 
 /**
- * ProductSearch represents the model behind the search form of `backend\models\Product`.
+ * OrderSearch represents the model behind the search form of `backend\models\Order`.
  */
-class ProductSearch extends Product
+class OrderSearch extends Order
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,9 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'isTradable'], 'integer'],
-            [['name', 'description', 'created_at', 'updated_at', 'measurement', 'image'], 'safe'],
-            [['price', 'remind_value'], 'number'],
+            [['id', 'product_id', 'customer_id', 'status'], 'integer'],
+            [['qty', 'price'], 'number'],
+            [['created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find();
+        $query = Order::find();
 
         // add conditions that should always apply here
 
@@ -60,17 +60,14 @@ class ProductSearch extends Product
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'product_id' => $this->product_id,
+            'qty' => $this->qty,
             'price' => $this->price,
+            'customer_id' => $this->customer_id,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'remind_value' => $this->remind_value,
-            'isTradable' => $this->isTradable,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'measurement', $this->measurement])
-            ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }
