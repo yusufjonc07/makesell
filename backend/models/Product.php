@@ -16,6 +16,8 @@ use Yii;
  * @property string $updated_at
  * @property float $remind_value
  * @property string $measurement
+ * @property string $isTradable
+ * @property yii\web\UploadedFile $image
  *
  * @property Ingredient[] $ingredients
  * @property Order[] $orders
@@ -43,12 +45,13 @@ class Product extends \yii\db\ActiveRecord
             [['name', 'price', 'remind_value', 'measurement'], 'required'],
             [['price', 'remind_value'], 'number'],
             [['description'], 'string'],
+            ['isTradable', 'boolean'],
             [['image'], 'file', 'extensions' => 'png,jpg,jpeg,webp', 'checkExtensionByMimeType'=>false, 'skipOnEmpty' => false],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'measurement'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
-    }
+    }   
 
     /**
      * {@inheritdoc}
@@ -58,6 +61,8 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
+            'image' => Yii::t('app', 'Image'),
+            'isTradable' => Yii::t('app', 'Is Tradable'),
             'price' => Yii::t('app', 'Price'),
             'description' => Yii::t('app', 'Description'),
             'created_at' => Yii::t('app', 'Created At'),
@@ -65,6 +70,16 @@ class Product extends \yii\db\ActiveRecord
             'remind_value' => Yii::t('app', 'Remind Value'),
             'measurement' => Yii::t('app', 'Measurement'),
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            $this->image->saveAs('uploads/' . $this->image->baseName . '.' . $this->image->extension);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

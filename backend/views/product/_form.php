@@ -2,56 +2,37 @@
 
 use backend\models\Product;
 use common\widgets\ImageUpload;
-use common\widgets\ImageUploadWidget;
-use dosamigos\fileupload\FileUploadUI;
-use kartik\select2\Select2;
-use kartik\select2\Select2Asset;
+use kartik\file\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\web\JsExpression;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var backend\models\Product $model */
 /** @var yii\widgets\ActiveForm $form */
 
-Select2Asset::register($this);
+$products_list = Product::find()->all();
+$product_data = ArrayHelper::map($products_list, 'id', 'name');
 
-$dataList = Product::find()->all();
-$data = ArrayHelper::map($dataList, 'id', 'name');
 ?>
 
 <div class="product-form">
 
     <?php $form = ActiveForm::begin(['id' => 'customer-form']); ?>
-    <div class="card">
-        <div class="card-header lead">
-            Details
-        </div>
-        <div class="card-body">
             <div class="row">
                 <div class="col-lg-6">
+                    <?= $form->field($model, 'image')->widget(FileInput::classname(), [
+    'options' => ['accept' => 'image/*'],
+]); ?>
+                </div>
+                <div class="col-lg-6">
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-                </div>
-                <div class="col-lg-6">
+               
                     <?= $form->field($model, 'measurement')->textInput(['maxlength' => true]) ?>
-                </div>
-                <div class="col-lg-6">
-                    <?= $form->field($model, 'image')->widget(ImageUpload::class, [
-                        'previewImageStyle' => 'max-width: 300px; max-height: 100%;',
-                    ]) ?>
-                </div>
-                <div class="col-lg-6">
+              
                     <?= $form->field($model, 'description')->textarea(['rows' => 3]) ?>
-
-                </div>
-
-
-
-
-                <div class="col-lg-6">
+             
                     <label class="control-label" for="production-qty">Remind Quantity</label>
                     <div class="input-group">
                         <?= Html::activeInput('number', $model, 'remind_value', ['class' => 'form-control']) ?>
@@ -66,11 +47,10 @@ $data = ArrayHelper::map($dataList, 'id', 'name');
                         </span>
                     </div>
                     <?= Html::error($model, 'remind_value') ?>
-                </div>
-                <div class="col-lg-6">
+                
                     <label class="control-label" for="production-product_id">Price</label>
                     <div class="input-group">
-                        <?= Html::activeInput('price', $model, 'price', ['class' => 'form-control']) ?>
+                        <?= Html::activeInput('number', $model, 'price', ['class' => 'form-control']) ?>
                         <?= Html::activeHint($model, 'price') ?>
                         <span class="input-group-text">
                             <?= Yii::$app->params['currency'] ?>
@@ -78,119 +58,21 @@ $data = ArrayHelper::map($dataList, 'id', 'name');
                     </div>
                     <?= Html::error($model, 'price') ?>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="card mt-3">
-        <div class="card-header lead">
-            Ingredients
-        </div>
-        <div class="card-body">
-            <?php DynamicFormWidget::begin([
-                'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-                'widgetBody' => '.container-items', // required: css class selector
-                'widgetItem' => '.item', // required: css class
-                'limit' => 4, // the maximum times, an element can be cloned (default 999)
-                'min' => 1, // 0 or 1 (default 1)
-                'insertButton' => '.add-item', // css class
-                'deleteButton' => '.remove-item', // css class
-                'model' => $modelsIngredient[0],
-                'formId' => 'customer-form',
-                'formFields' => [
-                    'product_id',
-                    'qty',
-                ],
-            ]); ?>
-
-            <div class="row container-items"><!-- widgetContainer -->
-                <?php foreach ($modelsIngredient as $i => $modelIngredient): ?>
-                    <div class="item panel panel-default col-lg-3"><!-- widgetBody -->
-                        <div class="card card-body">
-                            <div class="pull-right">
-                                <button type="button" class="add-item btn btn-success btn-xs">
-                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M14 2.26953V6.40007C14 6.96012 14 7.24015 14.109 7.45406C14.2049 7.64222 14.3578 7.7952 14.546 7.89108C14.7599 8.00007 15.0399 8.00007 15.6 8.00007H19.7305M12 18V12M9 15H15M14 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H15.2C16.8802 22 17.7202 22 18.362 21.673C18.9265 21.3854 19.3854 20.9265 19.673 20.362C20 19.7202 20 18.8802 20 17.2V8L14 2Z"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                                <button type="button" class="remove-item btn btn-danger btn-xs">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M20 11.9412V6.8C20 5.11984 20 4.27976 19.673 3.63803C19.3854 3.07354 18.9265 2.6146 18.362 2.32698C17.7202 2 16.8802 2 15.2 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H14M14 11H8M10 15H8M16 7H8M15 17H21"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="clearfix"></div>
-
-                            <?php
-                            // necessary for update action.
-                            if (!$modelIngredient->isNewRecord) {
-                                echo Html::activeHiddenInput($modelIngredient, "[{$i}]id");
-                            }
-                            ?>
-                            <?= $form->field($modelIngredient, "[{$i}]product_id")->dropDownList([]); ?>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <?= $form->field($modelIngredient, "[{$i}]qty")->textInput(['maxlength' => true]) ?>
-                                </div>
-
-                            </div><!-- .row -->
-
-                        </div>
+                <div class="col-lg-6">
+                    <div class="form-check form-switch mt-3">
+                        <?= Html::activeInput('checkbox', $model, 'isTradable', ['class' => 'form-check-input', 'value'=>1, 'checked'=>true]) ?>
+                        <?= Html::activeLabel( $model, 'isTradable', ['class' => 'form-check-label']) ?>
+                        <?= Html::activeHint($model, 'isTradable') ?>
+                        <?= Html::error($model, 'isTradable') ?>
                     </div>
-                <?php endforeach; ?>
+                </div>
             </div>
-            <?php DynamicFormWidget::end(); ?>
         </div>
-    </div>
 
-
-
-
-    <div class="form-group">
-        <?= Html::submitButton($modelIngredient->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-    <?php $form = ActiveForm::begin(); ?>
 
     <div class="form-group mt-2">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
-</div>
-
-<?php
-
-$this->registerCssFile("");
-
-[
-    'data' => $data,
-    'options' => ['multiple' => true, 'placeholder' => 'Search for a city ...'],
-    'pluginOptions' => [
-        'allowClear' => true,
-        'minimumInputLength' => 3,
-        'language' => [
-            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-        ],
-        'ajax' => [
-            'url' => Url::to(['product/list']),
-            'dataType' => 'json',
-            'data' => new JsExpression('function(params) { return {q:params.term}; }')
-        ],
-        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-        'templateResult' => new JsExpression('function(city) { return city.text; }'),
-        'templateSelection' => new JsExpression('function (city) { return city.text; }'),
-    ],
-];
-

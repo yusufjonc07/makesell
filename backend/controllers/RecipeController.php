@@ -2,20 +2,16 @@
 
 namespace backend\controllers;
 
-use backend\models\Ingredient;
-use backend\models\Product;
-use backend\models\ProductSearch;
 use backend\models\Recipe;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
- * ProductController implements the CRUD actions for Product model.
+ * RecipeController implements the CRUD actions for Recipe model.
  */
-class ProductController extends Controller
+class RecipeController extends Controller
 {
     /**
      * @inheritDoc
@@ -36,66 +32,56 @@ class ProductController extends Controller
     }
 
     /**
-     * Lists all Product models.
+     * Lists all Recipe models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Recipe::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Product model.
+     * Displays a single Recipe model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-
-        $recipesProvider = new ActiveDataProvider([
-            'query' => $this->findModel($id)
-            ->getRecipes()
-            ->with(['ingredients', 'ingredients.product']),
-        ]);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'recipesProvider' => $recipesProvider,
         ]);
     }
 
     /**
-     * Creates a new Product model.
+     * Creates a new Recipe model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($redirect_to_production = false)
+    public function actionCreate()
     {
-        $model = new Product();
-
+        $model = new Recipe();
 
         if ($this->request->isPost) {
-
-
-
-            if ($model->load($this->request->post())) {
-                $model->image = UploadedFile::getInstance($model, 'image');
-                if ($model->upload() && $model->save()) {
-                    if ($redirect_to_production) {
-                        \Yii::$app->session->setFlash('success', 'Product created successfully. Now you can create a production.');
-                        return $this->redirect(['/production/create', 'product_id' => $model->id]);
-                    }
-                    return $this->redirect(['view', 'id' => $model->id]);
-
-                }
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -107,7 +93,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Updates an existing Product model.
+     * Updates an existing Recipe model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -127,7 +113,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Deletes an existing Product model.
+     * Deletes an existing Recipe model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -137,22 +123,22 @@ class ProductController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect($this->request->referrer);
     }
 
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Recipe model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Product the loaded model
+     * @return Recipe the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne(['id' => $id])) !== null) {
+        if (($model = Recipe::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }
