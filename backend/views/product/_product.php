@@ -25,6 +25,6 @@ if ($customer) {
         <span class="card-text text-primary">For:
             <?= number_format($model->price, 2) . ' ' . Yii::$app->params['currency'] ?></span>
         <p class="card-text"><?= $model->description ?></p>
-        <?= $customer ? $this->render('/order/_form', ['model' => $order]) : ''; ?>
+        <?= $customer ? $this->render('/order/_form', ['model' => $order]) : Html::a('View', ['/product/view', 'id'=>$model->id], ['class'=>'btn btn-primary w-100']); ?>
     </div>
 </div>

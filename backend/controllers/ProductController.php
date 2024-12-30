@@ -53,6 +53,30 @@ class ProductController extends Controller
     }
 
     /**
+     * Lists all Product recipes as a json.
+     *
+     * @return array
+     */
+    public function actionInfo($id)
+    {
+        $this->response->format = 'json';
+
+        $product = $this->findModel($id);
+        $info = $product->attributes;
+        $info['recipes'] = array_map(function($recipe){
+            $recipeInfo = $recipe->attributes;
+            $recipeInfo['ingredients'] = array_map(function($ingredient){
+                return $ingredient->attributes;
+            }, $recipe->getIngredients()->all());
+            return $recipeInfo;
+        }, $product->getRecipes()->all());
+
+        return $info;
+
+
+    }
+
+    /**
      * Displays a single Product model.
      * @param int $id ID
      * @return string
@@ -63,8 +87,8 @@ class ProductController extends Controller
 
         $recipesProvider = new ActiveDataProvider([
             'query' => $this->findModel($id)
-            ->getRecipes()
-            ->with(['ingredients', 'ingredients.product']),
+                ->getRecipes()
+                ->with(['ingredients', 'ingredients.product']),
         ]);
 
         return $this->render('view', [

@@ -11,6 +11,9 @@ use backend\models\Stock;
  */
 class StockSearch extends Stock
 {
+
+    public $name;
+
     /**
      * {@inheritdoc}
      */
@@ -41,7 +44,14 @@ class StockSearch extends Stock
      */
     public function search($params)
     {
-        $query = Stock::find();
+        $query = Product::find()
+            ->select([
+                '*',
+                'SUM(stock.qty) as remind_value',
+            ])
+            ->joinWith('stocks')
+            ->with('stocks')
+            ->where(['>', 'stock.qty', 0]);
 
         // add conditions that should always apply here
 
@@ -60,7 +70,6 @@ class StockSearch extends Stock
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'product_id' => $this->product_id,
             'qty' => $this->qty,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

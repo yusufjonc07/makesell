@@ -18,16 +18,9 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-lg-6">
-            <label class="control-label" for="production-product_id">Product</label>
-
+            <?= Html::activeLabel($model, 'product_id') ?>
             <div class="input-group">
-                <?= Select2::widget([
-                    'model' => $model,
-                    'attribute' => 'product_id',
-                    'data' => ArrayHelper::map(Product::find()->all(), 'id', 'name'),
-                    'options' => ['placeholder' => 'Select Product'],
-                    'pluginOptions' => ['allowClear' => true],
-                ]) ?>
+                <?= Html::activeDropDownList($model, 'product_id', ArrayHelper::map(Product::find()->all(), 'id', 'name'), ['class' => 'form-select']) ?>
                 <a href="<?= Url::toRoute(["/product/create", "redirect_to_production" => true]) ?>"
                     class="btn btn-secondary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,13 +35,8 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6">
             <label class="control-label" for="production-product_id">Recipe</label>
             <div class="input-group">
-                <?= Select2::widget([
-                    'model' => $model,
-                    'attribute' => 'recipe_id',
-                    'data' => \backend\models\Product::find()->select(['id', 'name AS label'])->indexBy('id')->column(),
-                    'options' => ['placeholder' => 'Select Recipe'],
-                    'pluginOptions' => ['allowClear' => true],
-                ]) ?>
+                <?= Html::activeDropDownList($model, 'recipe_id', [], ['class' => 'form-select']) ?>
+
                 <a href="<?= Url::to(["/recipe/create", "redirect_to_production" => true], ) ?>"
                     class="btn btn-secondary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,10 +83,27 @@ use yii\widgets\ActiveForm;
 
 
 <?php $this->registerJs(<<<JS
-    $('#production-product_id').on('change', function() {
-        var product_id = $(this).val();
-        $.get('/production/get-recipe', {product_id: product_id}, function(data) {
-            $('#production-recipe_id').val(data);
+
+
+    $.fn.fillRecipeDropDown = function(recipes){
+        console.log("retspetla:", recipes)
+    }
+
+    $.fn.getProductInfo = function(product_id){
+
+        if(!product_id){
+            return
+        }
+
+        $.get('/product/info', {id: product_id}, function(productInfo) {
+            $.fn.fillRecipeDropDown(productInfo.recipes)
         });
+    }
+
+    $.fn.getProductInfo($('#production-product_id').val())
+
+
+    $('#production-product_id').on('change', function() {
+        $.fn.getProductInfo($(this).val())
     });
 JS); ?>
