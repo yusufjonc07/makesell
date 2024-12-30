@@ -53,9 +53,9 @@ class Production extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'recipe_id' => Yii::t('app', 'Recipe ID'),
-            'product_id' => Yii::t('app', 'Product ID'),
-            'user_id' => Yii::t('app', 'User ID'),
+            'recipe_id' => Yii::t('app', 'Recipe'),
+            'product_id' => Yii::t('app', 'Product'),
+            'user_id' => Yii::t('app', 'User'),
             'qty' => Yii::t('app', 'Qty'),
             'price' => Yii::t('app', 'Price'),
             'created_at' => Yii::t('app', 'Created At'),

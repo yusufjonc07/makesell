@@ -62,11 +62,15 @@ class ProductController extends Controller
         $this->response->format = 'json';
 
         $product = $this->findModel($id);
+
         $info = $product->attributes;
+
         $info['recipes'] = array_map(function($recipe){
             $recipeInfo = $recipe->attributes;
             $recipeInfo['ingredients'] = array_map(function($ingredient){
-                return $ingredient->attributes;
+                $ingredientInfo = $ingredient->attributes;
+                $ingredientInfo['product'] = $ingredient->product->attributes;
+                return $ingredientInfo;
             }, $recipe->getIngredients()->all());
             return $recipeInfo;
         }, $product->getRecipes()->all());
