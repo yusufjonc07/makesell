@@ -72,8 +72,6 @@ class ProductController extends Controller
         }, $product->getRecipes()->all());
 
         return $info;
-
-
     }
 
     /**

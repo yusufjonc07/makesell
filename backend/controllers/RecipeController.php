@@ -2,11 +2,18 @@
 
 namespace backend\controllers;
 
+use backend\models\DynamicModel;
+use backend\models\Ingredient;
+use backend\models\Product;
 use backend\models\Recipe;
+use Exception;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
 
 /**
  * RecipeController implements the CRUD actions for Recipe model.
@@ -75,20 +82,67 @@ class RecipeController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Recipe();
+        $product = Product::findOne($id);
+        $product_list = Product::find()->select(['id', 'name', 'measurement'])->all();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if(!$product){
+            throw new NotFoundHttpException('Product not found');
         }
 
+        $modelRecipe = new Recipe();
+        $ingredientModels = [new Ingredient()];
+
+        $modelRecipe->product_id = $product->id;
+
+        if ($modelRecipe->load(Yii::$app->request->post())) {
+
+            $modelsIngredient = DynamicModel::createMultiple(Ingredient::classname());
+            DynamicModel::loadMultiple($modelsIngredient, Yii::$app->request->post());
+
+            // ajax validation
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = 'json';
+                return ArrayHelper::merge(
+                    ActiveForm::validateMultiple($modelsIngredient),
+                    ActiveForm::validate($modelRecipe)
+                );
+            }
+
+            // validate all models
+            $valid = $modelRecipe->validate();
+
+            $valid = DynamicModel::validateMultiple($modelsIngredient) && $valid;
+            
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $modelRecipe->save(false)) {
+                        foreach ($modelsIngredient as $modelIngredient) {
+                            $modelIngredient->recipe_id = $modelRecipe->id;
+                            if (! ($flag = $modelIngredient->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['/product/view', 'id' => $modelRecipe->product_id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }
+
+
         return $this->render('create', [
-            'model' => $model,
+            'model' => $modelRecipe,
+            'product' => $product,
+            'product_list' => $product_list,
+            'ingredientModels' => $ingredientModels,
         ]);
     }
 
@@ -139,6 +193,6 @@ class RecipeController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
     }
 }

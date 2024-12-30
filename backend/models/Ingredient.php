@@ -31,7 +31,7 @@ class Ingredient extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['recipe_id'], 'required'],
+            [[ 'qty', 'product_id'], 'required'],
             [['recipe_id', 'product_id'], 'integer'],
             [['qty'], 'number'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
