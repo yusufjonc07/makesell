@@ -75,16 +75,15 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6">
             <div class="card" style="min-height: 100%">
                 <div class="card-header lead">
-                    Ingredient usage & Cost calculation
+                    Ingredient usage
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Product</th>
+                                <th>Norm qty.</th>
                                 <th>Used qty.</th>
-                                <th>Tot. cost</th>
-                                <th>Avg. cost</th>
                             </tr>
                             <tr>
                                 <td colspan="5" id="usage-label">* Please fill production details</td>
@@ -96,7 +95,7 @@ use yii\widgets\ActiveForm;
                 <div class="card-footer">
                     <label class="control-label" for="production-product_id">Cost</label>
                     <div class="input-group">
-                        <?= Html::activeInput('price', $model, 'qty', ['class' => 'form-control', 'readonly' => true]) ?>
+                        <?= Html::activeInput('number', $model, 'price', ['class' => 'form-control', 'readonly' => true]) ?>
                         <span class="input-group-text">
                             <?= Yii::$app->params['currency'] ?>
                         </span>
@@ -117,6 +116,8 @@ use yii\widgets\ActiveForm;
 
 <?php $this->registerJs(<<<JS
 
+    let selected_product = {};
+    let selected_recipe = {};
 
     $.fn.fillRecipeDropDown = function(recipes){
 
@@ -127,16 +128,21 @@ use yii\widgets\ActiveForm;
         $("#production-recipe_id").html(optionsString);
     }
 
-    $.fn.putUsageDetails = function(recipe, qty){
+    $.fn.putUsageDetails = function(){
 
         $("#usage-label").addClass("d-none");
 
+        let qty = $("#production-qty").val();
 
-        let usageTableRowsString = recipe.ingredients.map(function(ingredient) {
+
+        let usageTableRowsString = selected_recipe.ingredients.map(function(ingredient) {
+
+            let measurement = ingredient.product.measurement
+
             return `<tr>
                 <td>\${ingredient.product.name}</td>
-                <td>\${ingredient.qty * qty}</td>
-                <td>\${ingredient.qty}</td>
+                <td>\${ingredient.qty} \${measurement}</td>
+                <td>\${ingredient.qty * qty} \${measurement}</td>
             </tr>`;
             }).join(', ')
 
@@ -150,11 +156,23 @@ use yii\widgets\ActiveForm;
         }
 
         $.get('/product/info', {id: product_id}, function(productInfo) {
+
+            selected_product = productInfo;
+
             $.fn.fillRecipeDropDown(productInfo.recipes)
 
             if(productInfo.recipes.length > 0){
-                $.fn.putUsageDetails(productInfo.recipes[0], 0)
+                selected_recipe = productInfo.recipes[0];
+                $.fn.putUsageDetails()
             }
+        });
+    }
+
+    $.fn.getProductCost = function(){
+
+
+        $.post('/production/cost', {recipe_id: selected_recipe.id, production_qty: $('#production-qty').val()}, function(cost) {
+            $('#production-price').val(cost);
         });
     }
 
@@ -163,5 +181,22 @@ use yii\widgets\ActiveForm;
 
     $('#production-product_id').on('change', function() {
         $.fn.getProductInfo($(this).val())
+    });
+
+    $('#production-qty').on('change', function() {
+        $.fn.putUsageDetails()
+        $.fn.getProductCost()
+    });
+
+    $('#production-recipe_id').on('change', function() {
+
+        let recipe_id = $(this).val();
+
+        selected_recipe = selected_product.recipes.find(function(recipe){
+            return recipe.id == recipe_id;
+        });
+
+        $.fn.putUsageDetails()
+
     });
 JS); ?>

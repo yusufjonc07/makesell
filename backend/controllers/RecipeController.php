@@ -84,17 +84,14 @@ class RecipeController extends Controller
      */
     public function actionCreate($id)
     {
-        $product = Product::findOne($id);
-        $product_list = Product::find()->select(['id', 'name', 'measurement'])->all();
+        
 
-        if(!$product){
-            throw new NotFoundHttpException('Product not found');
-        }
+     
 
         $modelRecipe = new Recipe();
         $ingredientModels = [new Ingredient()];
 
-        $modelRecipe->product_id = $product->id;
+        $modelRecipe->product_id = $id;
 
         if ($modelRecipe->load(Yii::$app->request->post())) {
 
@@ -140,8 +137,6 @@ class RecipeController extends Controller
 
         return $this->render('create', [
             'model' => $modelRecipe,
-            'product' => $product,
-            'product_list' => $product_list,
             'ingredientModels' => $ingredientModels,
         ]);
     }
@@ -156,13 +151,61 @@ class RecipeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $ingredientModels = $model->ingredients ?? [new Ingredient()];
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+       
+        if ($model->load(Yii::$app->request->post())) {
+
+            
+
+            $oldIDs = ArrayHelper::map($ingredientModels, 'id', 'id');
+            $ingredientModels = DynamicModel::createMultiple(Ingredient::className(), $ingredientModels);
+            DynamicModel::loadMultiple($ingredientModels, Yii::$app->request->post());
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($ingredientModels, 'id', 'id')));
+
+            // ajax validation
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = 'json';
+                return ArrayHelper::merge(
+                    ActiveForm::validateMultiple($ingredientModels),
+                    ActiveForm::validate($model)
+                );
+            }
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = DynamicModel::validateMultiple($ingredientModels) && $valid;
+
+            if ($valid) {
+               
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        if (! empty($deletedIDs)) {
+                            Ingredient::deleteAll(['id' => $deletedIDs]);
+                        }
+                        foreach ($ingredientModels as $modelIngredient) {
+                            $modelIngredient->recipe_id = $model->id;
+                            if (! ($flag = $modelIngredient->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['/product/view', 'id' => $model->product_id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    die($e->getMessage());
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'ingredientModels' => $ingredientModels,
         ]);
     }
 

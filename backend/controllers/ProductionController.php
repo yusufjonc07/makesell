@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Production;
 use backend\models\ProductionSearch;
+use backend\models\Recipe;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -46,6 +47,24 @@ class ProductionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    /**
+     * Returns predicting average cost of single unit of product made.
+     */
+    public function actionCost()
+    {
+       $this->response->format = 'json';
+
+       if($this->request->isPost){
+        $recipe_id = $this->request->post('recipe_id');
+        $production_qty = $this->request->post('production_qty');
+
+        $recipe = Recipe::find()->where(['id'=>$recipe_id])->with("product", "ingredients", "ingredients.product")->one();
+
+        return $recipe->id;
+       }
+    }
+
 
     /**
      * Displays a single Production model.

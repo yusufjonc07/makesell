@@ -1,4 +1,5 @@
 <?php
+use backend\models\Product;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
@@ -7,6 +8,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 /** @var yii\web\View $this */
 /** @var backend\models\Ingredient $model */
 /** @var yii\widgets\ActiveForm $form */
+
 ?>
 
 <div class="customer-form">

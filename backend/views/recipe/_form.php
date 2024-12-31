@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Product;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -8,6 +9,9 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var backend\models\Recipe $model */
 /** @var yii\widgets\ActiveForm $form */
+
+$product_list = Product::find()->select(['id', 'name', 'measurement'])->all();
+
 ?>
 
 <div class="recipe-form">
