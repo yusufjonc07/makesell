@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Production;
 use backend\models\ProductionSearch;
 use backend\models\Recipe;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
