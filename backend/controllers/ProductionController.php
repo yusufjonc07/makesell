@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\Steppy;
 use backend\models\Production;
 use backend\models\ProductionSearch;
 use backend\models\Recipe;
@@ -73,13 +74,15 @@ class ProductionController extends Controller
             // Cost of production includes sum of price multiplied by production quantity
             $total_production_cost = 0;
 
+            foreach ($recipe->ingredients as $ingredient) {
+                $steppy = new Steppy();
+                $steppy->query = $ingredient->product->getStocks();
+                $steppy->column = 'qty';
+                
+                
+            }
 
-            // $result = Yii::$app->db->createCommand($sql, [
-            //     ':product_id' => $ingredient->product_id,
-            //     ':cumulativeLimit' => $cumulativeLimit,
-            // ])->queryScalar();
-
-            // return $result;
+           
 
             return $recipe->id;
         }

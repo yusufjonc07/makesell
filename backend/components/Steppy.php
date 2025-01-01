@@ -36,7 +36,7 @@ class Steppy extends Component
      *///
 
 
-    public function minus($callback = null)
+    public function run($callback = null, $minus=true)
     {
         $query_all = clone $this->query->all();
 
@@ -49,7 +49,8 @@ class Steppy extends Component
         $increment_qty = 0;
 
         foreach ($query_all as $record) {
-
+            
+            
             // If there is still unprocessed quantity//+
             if ($unproceed_qty > 0) {
                 if ($record[$this->column] < $unproceed_qty) {
@@ -66,8 +67,13 @@ class Steppy extends Component
                 $increment_qty += $callback($record, $unproceed_qty);
             }
 
+            // Precision
             $record[$this->column] = round($record[$this->column], $this->precision);
-            $record->save();
+
+            if($minus){
+                $record->save();
+            }
+            
         }
 
         return $callback ? $increment_qty : true;
