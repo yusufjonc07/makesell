@@ -6,6 +6,7 @@ use backend\models\Production;
 use backend\models\ProductionSearch;
 use backend\models\Recipe;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -54,18 +55,35 @@ class ProductionController extends Controller
      */
     public function actionCost()
     {
-       $this->response->format = 'json';
+        $this->response->format = 'json';
 
-       if($this->request->isPost){
-        $recipe_id = $this->request->post('recipe_id');
-        $production_qty = $this->request->post('production_qty');
+        if ($this->request->isPost) {
 
-        $recipe = Recipe::find()->where(['id'=>$recipe_id])->with("product", "ingredients", "ingredients.product")->one();
+            // Get recipe ID and production quantity from post data
+            $recipe_id = $this->request->post('recipe_id');
+            $production_qty = $this->request->post('production_qty');
 
-        return $recipe->id;
-       }
+            // Fetch recipe details including its ingredients and products
+            $recipe = Recipe::find()->where(['id' => $recipe_id])->with("product", "ingredients", "ingredients.product")->one();
+
+            if (!$recipe) {
+                throw new NotFoundHttpException("Recipe not found!");
+            }
+
+            // Cost of production includes sum of price multiplied by production quantity
+            $total_production_cost = 0;
+
+
+            // $result = Yii::$app->db->createCommand($sql, [
+            //     ':product_id' => $ingredient->product_id,
+            //     ':cumulativeLimit' => $cumulativeLimit,
+            // ])->queryScalar();
+
+            // return $result;
+
+            return $recipe->id;
+        }
     }
-
 
     /**
      * Displays a single Production model.

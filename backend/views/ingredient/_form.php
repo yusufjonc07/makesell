@@ -1,5 +1,4 @@
 <?php
-use backend\models\Product;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
