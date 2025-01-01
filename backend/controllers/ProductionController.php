@@ -79,12 +79,16 @@ class ProductionController extends Controller
                 $steppy->query = $ingredient->product->getStocks();
                 $steppy->column = 'qty';
                 
-                
+                $total_production_cost += $steppy->run(function($record, $unproceed_qty){
+                    if ($record->qty < $unproceed_qty) {
+                        return $record->qty * $record->price;
+                    } else {
+                        return $unproceed_qty * $record->price;
+                    }
+                }, false);
             }
 
-           
-
-            return $recipe->id;
+            return round($total_production_cost / $production_qty, 2);
         }
     }
 

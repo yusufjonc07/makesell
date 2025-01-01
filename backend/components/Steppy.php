@@ -50,6 +50,10 @@ class Steppy extends Component
 
         foreach ($query_all as $record) {
             
+            // Callback processing
+            if ($callback && is_callable($callback)) {
+                $increment_qty += $callback($record, $unproceed_qty);
+            }
             
             // If there is still unprocessed quantity//+
             if ($unproceed_qty > 0) {
@@ -62,10 +66,7 @@ class Steppy extends Component
                 }
             }
 
-            // Callback processing
-            if ($callback && is_callable($callback)) {
-                $increment_qty += $callback($record, $unproceed_qty);
-            }
+            
 
             // Precision
             $record[$this->column] = round($record[$this->column], $this->precision);
