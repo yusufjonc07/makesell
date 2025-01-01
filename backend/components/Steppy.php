@@ -3,15 +3,14 @@
 namespace backend\components;
 
 use yii\base\Component;
-use yii\db\Query;
-use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 
 class Steppy extends Component
 {
 
     // Model class that processes goes through
-    public ActiveRecord $query;
+    public ActiveQuery $query;
 
     // Column name used for storing quantity or value which is type of number
     public string $column;
@@ -38,7 +37,6 @@ class Steppy extends Component
 
     public function run($callback = null, $minus=true)
     {
-        $query_all = clone $this->query->all();
 
         if (!$this->checkStock()) {
             return false;
@@ -48,13 +46,13 @@ class Steppy extends Component
 
         $increment_qty = 0;
 
-        foreach ($query_all as $record) {
+        foreach ($this->query->all() as $record) {
             
             // Callback processing
             if ($callback && is_callable($callback)) {
                 $increment_qty += $callback($record, $unproceed_qty);
             }
-            
+
             // If there is still unprocessed quantity//+
             if ($unproceed_qty > 0) {
                 if ($record[$this->column] < $unproceed_qty) {

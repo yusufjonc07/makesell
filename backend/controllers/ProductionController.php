@@ -8,6 +8,7 @@ use backend\models\ProductionSearch;
 use backend\models\Recipe;
 use Yii;
 use yii\db\Query;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -78,14 +79,20 @@ class ProductionController extends Controller
                 $steppy = new Steppy();
                 $steppy->query = $ingredient->product->getStocks();
                 $steppy->column = 'qty';
-                
-                $total_production_cost += $steppy->run(function($record, $unproceed_qty){
+
+                $ingredient_cost = $steppy->run(function($record, $unproceed_qty){
                     if ($record->qty < $unproceed_qty) {
                         return $record->qty * $record->price;
                     } else {
                         return $unproceed_qty * $record->price;
                     }
                 }, false);
+
+                if($ingredient_cost == false){
+                    throw new BadRequestHttpException("Ingredient is not enough on stock!");
+                }else{
+                    $total_production_cost += $ingredient_cost;
+                }
             }
 
             return round($total_production_cost / $production_qty, 2);
