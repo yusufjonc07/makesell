@@ -1,5 +1,6 @@
 <?php
 
+use backend\components\Steppy;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
 
@@ -17,9 +18,6 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
-    'aliases' => [
-        '@web' => '@backend/web',
-    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -28,6 +26,9 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        ],
+        'steppy' => [
+            'class' => Steppy::class
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
@@ -49,20 +50,20 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                
+
             ],
         ],
         'assetManager' => [
-        'bundles' => [
-            'yii\bootstrap\BootstrapAsset' => [
-                'class'=> BootstrapAsset::class
+            'bundles' => [
+                'yii\bootstrap\BootstrapAsset' => [
+                    'class' => BootstrapAsset::class
+                ],
+                'yii\bootstrap\BootstrapPluginAsset' => [
+                    'class' => BootstrapPluginAsset::class
+                ],
+
             ],
-            'yii\bootstrap\BootstrapPluginAsset' => [
-                'class'=> BootstrapPluginAsset::class
-            ],
-          
         ],
-    ],
     ],
     'params' => $params,
 ];
