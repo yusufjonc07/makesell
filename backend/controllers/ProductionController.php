@@ -12,6 +12,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UnprocessableEntityHttpException;
 
 /**
  * ProductionController implements the CRUD actions for Production model.
@@ -89,7 +90,7 @@ class ProductionController extends Controller
                 }, false);
 
                 if($ingredient_cost == false){
-                    throw new BadRequestHttpException("Ingredient is not enough on stock!");
+                    throw new UnprocessableEntityHttpException("Ingredient is not enough on stock!");
                 }else{
                     $total_production_cost += $ingredient_cost;
                 }

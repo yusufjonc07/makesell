@@ -40,7 +40,8 @@ use yii\widgets\ActiveForm;
                     <div class="input-group">
                         <?= Html::activeDropDownList($model, 'recipe_id', [], ['class' => 'form-select']) ?>
 
-                        <a href="<?= Url::to(["/recipe/create", "redirect_to_production" => true], ) ?>"
+                        <a id="recipe_link"
+                            href="<?= Url::to(["/recipe/create", "redirect_to_production" => true], ) ?>"
                             class="btn btn-secondary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -161,6 +162,8 @@ use yii\widgets\ActiveForm;
 
             $.fn.fillRecipeDropDown(productInfo.recipes)
 
+            $("#recipe_link").attr('href', `/recipe/create?id=\${selected_product.id}&redirect_to_production=1`)
+
             if(productInfo.recipes.length > 0){
                 selected_recipe = productInfo.recipes[0];
                 $.fn.putUsageDetails()
@@ -170,9 +173,20 @@ use yii\widgets\ActiveForm;
 
     $.fn.getProductCost = function(){
 
-
         $.post('/production/cost', {recipe_id: selected_recipe.id, production_qty: $('#production-qty').val()}, function(cost) {
             $('#production-price').val(cost);
+        }).fail(function(error){
+
+            if(error.responseJSON.status == 422){
+                alert(error.responseJSON.message);
+
+                $('#production-qty').val('');
+
+                $.fn.putUsageDetails()
+                
+                $('#production-qty').focus()
+            }
+
         });
     }
 

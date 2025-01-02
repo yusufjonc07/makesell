@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var backend\models\Recipe $model */
 
-$this->title = Yii::t('app', 'Create Recipe');
+$this->title = Yii::t('app', 'Create Recipe for {name}', ['name'=>$model->product->name]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Recipes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
