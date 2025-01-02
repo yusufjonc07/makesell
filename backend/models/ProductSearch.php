@@ -41,12 +41,26 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find();
+        $query = Product::find()
+        ->select([
+            'product.id',
+            'product.name',
+            'product.image',
+            'product.price',
+            'product.measurement',
+            'SUM(stock.qty) as remind_value',
+        ])
+        ->joinWith('stocks')
+        ->with('stocks')
+        ->where(['>', 'stock.qty', 0])->groupBy('product.id');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>[
+                'pageSize'=>10
+            ]
         ]);
 
         $this->load($params);

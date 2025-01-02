@@ -37,7 +37,7 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group mt-2 d-flex justify-content-between gap-2">
         <?= Html::submitButton(Yii::t('app', 'Sell now'), ['class' => 'btn btn-success w-100']) ?>
-        <?= Html::submitButton(Yii::t('app', 'Order'), ['class' => 'btn btn-warning w-100']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Pre-order'), ['class' => 'btn btn-warning w-100']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -1,9 +1,14 @@
 <?php
 
+use backend\models\Order;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var backend\models\Customer $customer */
+
+$order = new Order();
+$order->customer_id = $customer->id;
+$order->qty = 1;
 
 $this->title = Yii::t('app', 'Create Order');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Orders'), 'url' => ['index']];
@@ -13,7 +18,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('/product/_list', compact('dataProvider', 'searchModel', 'customer')) ?>
+    <?= $this->render('/product/_list', [
+        'dataProvider' => $dataProvider,
+        'searchModel' => $searchModel,
+        'footer' => function ($model) use ($order) {
+                $order->product_id = $model->id;
+                $order->price = $model->price;
+                return $this->render('/order/_form', ['model' => $order]);
+            }
+    ]) ?>
 
 </div>
 
