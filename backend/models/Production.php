@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -36,7 +37,7 @@ class Production extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['recipe_id', 'product_id', 'user_id', 'qty', 'price'], 'required'],
+            [['recipe_id', 'product_id', 'qty', 'price'], 'required'],
             [['recipe_id', 'product_id', 'user_id'], 'integer'],
             [['qty', 'price'], 'number'],
             [['created_at', 'updated_at'], 'safe'],

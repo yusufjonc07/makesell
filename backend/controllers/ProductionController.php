@@ -122,7 +122,7 @@ class ProductionController extends Controller
     public function actionCreate()
     {
         $model = new Production();
-
+        $model->user_id = Yii::$app->user->identity->id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
 
@@ -133,10 +133,9 @@ class ProductionController extends Controller
                     $steppy->quantity = $ingredient->qty * $model->qty;
                     $steppy->run();
                 }
-    
-
-
-                return $this->redirect(['view', 'id' => $model->id]);
+                
+                Yii::$app->session->setFlash('success', 'Produced successfully!');
+                return $this->refresh();
             }
         } else {
             $model->loadDefaultValues();

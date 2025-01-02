@@ -29,6 +29,19 @@ class m130524_201442_init extends Migration
             'updated_at' => $this->timestamp()->defaultExpression('NOW()'),
             
         ], $tableOptions);
+
+        $this->insert('{{%user}}', [
+            'username' => 'admin',
+            'phone' => '1234567890',
+            'purpose' => 'findjob',
+            'business_type' => 'manufacturer',
+            'business_desciption' => 'admin',
+            'company_scale' => 'admin',
+            'auth_key' => 'admin',
+            'status' => 10,
+            'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
+            'email' => 'ulala@example.com'
+        ]);
     }
 
     public function down()
