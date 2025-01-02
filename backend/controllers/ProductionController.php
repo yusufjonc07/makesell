@@ -80,6 +80,7 @@ class ProductionController extends Controller
                 $steppy = new Steppy();
                 $steppy->query = $ingredient->product->getStocks();
                 $steppy->column = 'qty';
+                $steppy->quantity = $ingredient->qty * $production_qty;
 
                 $ingredient_cost = $steppy->run(function($record, $unproceed_qty){
                     if ($record->qty < $unproceed_qty) {
@@ -124,6 +125,17 @@ class ProductionController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+
+                foreach ($model->recipe->ingredients as $ingredient) {
+                    $steppy = new Steppy();
+                    $steppy->query = $ingredient->product->getStocks();
+                    $steppy->column = 'qty';
+                    $steppy->quantity = $ingredient->qty * $model->qty;
+                    $steppy->run();
+                }
+    
+
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {

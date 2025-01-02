@@ -57,19 +57,19 @@ class Steppy extends Component
             if ($unproceed_qty > 0) {
                 if ($record[$this->column] < $unproceed_qty) {
                     $unproceed_qty -= $record[$this->column];
-                    $record[$this->column] = 0;
+                    $record->delete();
+                    continue;
                 } else {
                     $record[$this->column] -= $unproceed_qty;
                     break;
                 }
             }
 
-            
-
             // Precision
             $record[$this->column] = round($record[$this->column], $this->precision);
 
             if($minus){
+
                 $record->save();
             }
             
