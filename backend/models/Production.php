@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use backend\components\Steppy;
 use common\models\User;
 use Yii;
 
@@ -62,6 +63,58 @@ class Production extends \yii\db\ActiveRecord
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+
+        if ($insert) {
+            foreach ($this->recipe->ingredients as $ingredient) {
+                $steppy = new Steppy();
+                $steppy->query = $ingredient->product->getStocks();
+                $steppy->column = 'qty';
+                $steppy->quantity = $ingredient->qty * $this->qty;
+                $steppy->minus();
+            }
+        }
+
+        return parent::afterSave($insert, $changedAttributes);
+
+    }
+
+    public function beforeSave($insert)
+    {
+
+        if ($insert) {
+            foreach ($this->recipe->ingredients as $ingredient) {
+                $steppy = new Steppy();
+                $steppy->query = $ingredient->product->getStocks();
+                $steppy->column = 'qty';
+                $steppy->quantity = $ingredient->qty * $this->qty;
+                
+                if(!$steppy->checkStock()){
+                    return false;
+                }
+            }
+        }
+
+        return parent::beforeSave($insert);
+
+    }
+
+    public function beforeDelete()
+    {
+        foreach ($this->recipe->ingredients as $ingredient) {
+            $steppy = new Steppy();
+            $steppy->query = Stock::find()->where([
+                'product_id' => $ingredient->product_id,
+                'price' => $ingredient->product->price
+            ]);
+            $steppy->column = 'qty';
+            $steppy->quantity = $ingredient->qty * $this->qty;
+            $steppy->plus();
+        }
+        return parent::beforeDelete();
     }
 
     /**

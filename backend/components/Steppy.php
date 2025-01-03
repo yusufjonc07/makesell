@@ -35,7 +35,7 @@ class Steppy extends Component
      *///
 
 
-    public function run($callback = null, $minus=true)
+    public function minus($callback = null, $save=true)
     {
 
         if (!$this->checkStock()) {
@@ -61,16 +61,20 @@ class Steppy extends Component
                     continue;
                 } else {
                     $record[$this->column] -= $unproceed_qty;
-                    break;
+                    $unproceed_qty = 0;
                 }
             }
 
             // Precision
             $record[$this->column] = round($record[$this->column], $this->precision);
 
-            if($minus){
+            if($save){
 
                 $record->save();
+            }
+
+            if($unproceed_qty == 0){
+                break;
             }
             
         }
@@ -83,5 +87,32 @@ class Steppy extends Component
         $check_query = $this->query;
 
         return $check_query->sum($this->column) >= $this->quantity;
+    }
+
+
+    public function plus($callback = null)
+    {
+        $record = $this->query->one();
+
+        if ($record) {
+            $record[$this->column] += $this->quantity;
+        } else {
+            $record = new $this->query->modelClass;
+
+            foreach ($this->query->where as $key => $item) {
+                $record[$key] = $item;
+            }
+            $record[$this->column] = $this->quantity;
+        }
+
+        if(is_callable($callback)){
+            $callback($record);
+        }
+
+        if ($record->save()) {
+            return true;
+        } else {
+            return \false;
+        }
     }
 }

@@ -82,7 +82,7 @@ class ProductionController extends Controller
                 $steppy->column = 'qty';
                 $steppy->quantity = $ingredient->qty * $production_qty;
 
-                $ingredient_cost = $steppy->run(function($record, $unproceed_qty){
+                $ingredient_cost = $steppy->minus(function($record, $unproceed_qty){
                     if ($record->qty < $unproceed_qty) {
                         return $record->qty * $record->price;
                     } else {
@@ -125,17 +125,8 @@ class ProductionController extends Controller
         $model->user_id = Yii::$app->user->identity->id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-
-                foreach ($model->recipe->ingredients as $ingredient) {
-                    $steppy = new Steppy();
-                    $steppy->query = $ingredient->product->getStocks();
-                    $steppy->column = 'qty';
-                    $steppy->quantity = $ingredient->qty * $model->qty;
-                    $steppy->run();
-                }
-                
                 Yii::$app->session->setFlash('success', 'Produced successfully!');
-                return $this->refresh();
+                return $this->redirect($this->request->referrer);
             }
         } else {
             $model->loadDefaultValues();

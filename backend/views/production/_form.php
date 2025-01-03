@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
 <div class="production-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['action'=>'/production/create']); ?>
 
     <div class="row">
         <div class="col-lg-6">
