@@ -2,6 +2,8 @@
 
 use backend\models\Production;
 use backend\models\Stock;
+use backend\models\Supply;
+use common\widgets\Dropdown;
 use yii\bootstrap5\Modal;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -13,7 +15,7 @@ use yii\widgets\Pjax;
 /** @var backend\models\StockSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Stocks');
+$this->title = Yii::t('app', 'Stock products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-index">
@@ -21,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Stock'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Product'), ['/product/create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= $this->render("/product/_list", [
@@ -29,8 +31,17 @@ $this->params['breadcrumbs'][] = $this->title;
         "searchModel" => $searchModel,
         "footer" => function ($model) {
                 return Html::tag('div', 
-                Html::buttonInput(Yii::t('app', 'Make'), ['class' => 'btn btn-primary w-100 add_button', 'data-product-id' => $model->id]).
-                Html::buttonInput(Yii::t('app', 'Buy'), ['class' => 'btn btn-secondary w-100 add_button', 'data-product-id' => $model->id]),
+                Html::buttonInput(Yii::t('app', 'Make'), ['class' => 'btn btn-primary w-100 production_button', 'data-product-id' => $model->id]).
+                Html::buttonInput(Yii::t('app', 'Buy'), ['class' => 'btn btn-secondary w-100 supply_button', 'data-product-id' => $model->id]) . 
+                Dropdown::widget([
+                    'buttonLabel' => '...',
+                    'items' => [
+                        ['label' => Yii::t('app', 'View'), 'url' => ['/product/view', 'id'=>$model->id]],
+                        ['label' => Yii::t('app', 'Update'), 'url' => ['/product/update', 'id'=>$model->id]],
+                        
+                    ],
+                    'buttonOptions' => ['class' => 'btn btn-primary'], // Custom button classes
+                ]),
                  [
                     'class' => 'd-flex justify-content-between gap-1',
                 ]);
@@ -41,9 +52,9 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php Modal::begin([
-    'id' => 'stock-modal',
+    'id' => 'production-modal',
     'size' => 'modal-xl',
-    'title' => Yii::t('app', 'Add Stock'),
+    'title' => Yii::t('app', 'Make production'),
     'options' => [
         'tabindex' => false,
     ],
@@ -55,27 +66,45 @@ echo $this->render('/production/_form', [
 
 Modal::end(); ?>
 
+<?php Modal::begin([
+    'id' => 'supply-modal',
+    'size' => 'modal-sm',
+    'title' => Yii::t('app', 'Get supply'),
+    'options' => [
+        'tabindex' => false,
+    ],
+]); 
+
+echo $this->render('/supply/_form', [
+    'model' => new Supply(),
+]);
+
+Modal::end(); ?>
+
 <?php
 
 $this->registerJs(<<<JS
 
-$('.add_button').click(function(){
-    var product_id = $(this).data('product-id');
+$.fn.productId = function(that){
+    return $(that).data('product-id');
+};
 
-    $('#stock-modal').modal('show');
+$('.production_button').click(function(){
 
-    $('#production-product_id').val(product_id);
+    $('#production-modal').modal('show');
 
-    $.fn.getProductInfo(product_id);
+    $('#production-product_id').val($.fn.productId(this));
 
-    // $.ajax({
-    //     url: '/stock/add',
-    //     type: 'POST',
-    //     data: {id: id},
-    //     success: function(data) {
-    //         $.pjax.reload({container: '#pjax-container'});
-    //     }
-    // });
+    $.fn.getProductInfo($.fn.productId(this));
+
+});
+
+$('.supply_button').click(function(){
+
+    $('#supply-modal').modal('show');
+
+    $('#supply-product_id').val($.fn.productId(this));
+
 });
 
 JS);

@@ -123,7 +123,7 @@ class Product extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Stocks]].
+     * Gets query for [[Stock products]].
      *
      * @return \yii\db\ActiveQuery
      */
