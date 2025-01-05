@@ -37,8 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_item',
-        'layout' => "<div class='row'>{items}</div>\n<br>{pager}",
-        'itemOptions' => ['class' => 'col-lg-3 mt-2'],
+        'layout' => "{items}{pager}",
         'emptyText' => Yii::t('app', 'No customers found.'),
         'pager' => [
             'options' => ['class' => 'pagination justify-content-center'],
@@ -50,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'emptyTextOptions' => ['class' => 'text-center'],
         'summaryOptions' => ['class' => 'mb-0'],
+        'options' => ['class' => 'mt-2 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4'],
     ]) ?>
 
 

@@ -84,6 +84,6 @@ echo GridView::widget([
 ]);
 Pjax::end();
 
-echo $total ? Html::a(Yii::t('app', 'Make an invoice'), ['/invoice/create'], ['class' => 'btn btn-primary w-100']) : null;
+echo $total ? Html::a(Yii::t('app', 'Make an invoice'), ['/invoice/create', 'customer_id'=>$dataProvider->models[0]->customer_id], ['class' => 'btn btn-primary w-100']) : null;
 
 Modal::end();
