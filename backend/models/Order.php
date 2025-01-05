@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $product_id
+ * @property int $invoice_id
  * @property float $qty
  * @property float $price
  * @property int $customer_id
@@ -18,6 +19,7 @@ use Yii;
  *
  * @property Customer $customer
  * @property Product $product
+ * @property Invoice $invoice
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -36,11 +38,12 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['product_id', 'qty', 'price', 'customer_id'], 'required'],
-            [['product_id', 'customer_id', 'status'], 'integer'],
+            [['product_id', 'customer_id', 'status', 'invoice_id'], 'integer'],
             [['qty', 'price'], 'number'],
             ['status', 'default', 'value' => 0],
             [['created_at', 'updated_at'], 'safe'],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
+            [['invoice_id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoice::class, 'targetAttribute' => ['invoice_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -56,6 +59,7 @@ class Order extends \yii\db\ActiveRecord
             'qty' => Yii::t('app', 'Qty'),
             'price' => Yii::t('app', 'Price'),
             'customer_id' => Yii::t('app', 'Customer'),
+            'invoice_id' => Yii::t('app', 'Invoice'),
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
@@ -70,6 +74,16 @@ class Order extends \yii\db\ActiveRecord
     public function getCustomer()
     {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
+    }
+
+    /**
+     * Gets query for [[Invoice]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoice()
+    {
+        return $this->hasOne(Invoice::class, ['id' => 'invoice_id']);
     }
 
     /**
