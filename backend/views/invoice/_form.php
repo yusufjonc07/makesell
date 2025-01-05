@@ -1,5 +1,6 @@
 <?php
 
+use common\widgets\AddressAutocomplete;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,23 +13,20 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'customer_id')->textInput() ?>
+    <?= Html::activeLabel($model, 'total_value') ?>
+    <div class="input-group">
+        <?= Html::activeInput('number', $model, 'total_value', ['class' => 'form-control']) ?>
+        <div class="input-group-text">
+            <?= Yii::$app->params['currency'] ?>
+        </div>
+    </div>
+    <?= $form->field($model, 'address')->widget(AddressAutocomplete::class, [
+        'apiKey' => '211e808f91284a558dd0e5c775f7dc62', // Replace with your Geoapify API key
+        'placeholder' => 'Start typing your address...',
+    ]); ?>
+    <?= $form->field($model, 'comment')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'total_value')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'number')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'comment')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
+    <div class="form-group mt-2">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 

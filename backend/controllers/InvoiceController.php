@@ -4,6 +4,9 @@ namespace backend\controllers;
 
 use backend\models\Invoice;
 use backend\models\InvoiceSearch;
+use backend\models\Order;
+use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -67,10 +70,20 @@ class InvoiceController extends Controller
      */
     public function actionCreate()
     {
+
+        $invoiceItems = $this->request->get('invoiceItems');
+
+
+        $orders = new ActiveDataProvider([
+            'query' => Order::find()->where(['status' => 0])->andWhere(['in', 'id',$invoiceItems]),
+        ]);
+
         $model = new Invoice();
+        $model->customer_id = $orders->models[0]->customer_id;
+        $model->total_value = $orders->query->sum('price*qty');
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post()) && $model->generateNumber()->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -79,6 +92,7 @@ class InvoiceController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'dataProvider' => $orders,
         ]);
     }
 

@@ -16,6 +16,7 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property Customer $customer
  * @property Product $product
  */
 class Order extends \yii\db\ActiveRecord
@@ -36,9 +37,10 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['product_id', 'qty', 'price', 'customer_id'], 'required'],
             [['product_id', 'customer_id', 'status'], 'integer'],
-            ['status', 'default', 'value' => 1],
             [['qty', 'price'], 'number'],
+            ['status', 'default', 'value' => 0],
             [['created_at', 'updated_at'], 'safe'],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -58,6 +60,16 @@ class Order extends \yii\db\ActiveRecord
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
+    }
+
+    /**
+     * Gets query for [[Customer]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCustomer()
+    {
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**

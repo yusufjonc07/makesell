@@ -24,8 +24,8 @@ class m241223_075652_create_order_table extends Migration
         ]);
 
         $this->addForeignKey('fk-order-product_id', 'order', 'product_id', 'product', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-order-customer_id', 'order', 'customer_id', 'customer', 'id', 'CASCADE', 'CASCADE');
 
-        
     }
 
     /**
@@ -33,6 +33,7 @@ class m241223_075652_create_order_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-order-customer_id', 'order');
         $this->dropForeignKey('fk-order-product_id', 'order');
 
         $this->dropTable('{{%order}}');

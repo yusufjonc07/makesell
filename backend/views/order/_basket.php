@@ -1,7 +1,9 @@
 <?php
 
+use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Modal;
 use yii\bootstrap5\Popover;
+use yii\grid\CheckboxColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\i18n\Formatter;
@@ -43,11 +45,16 @@ Modal::begin([
 ]);
 
 Pjax::begin();
+ActiveForm::begin([
+    'action' => ['/invoice/create'],
+    'method' => 'get',
+]);
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'showFooter' => true,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
+        ['class' => CheckboxColumn::class, 'name'=>'invoiceItems'],
         [
             'attribute' => 'product_id',
             'value' => 'product.name',
@@ -82,8 +89,9 @@ echo GridView::widget([
         ]
     ],
 ]);
+echo $total ? Html::submitButton(Yii::t('app', 'Make an invoice'), ['class' => 'btn btn-primary w-100']) : null;
+ActiveForm::end();
 Pjax::end();
 
-echo $total ? Html::a(Yii::t('app', 'Make an invoice'), ['/invoice/create', 'customer_id'=>$dataProvider->models[0]->customer_id], ['class' => 'btn btn-primary w-100']) : null;
 
 Modal::end();

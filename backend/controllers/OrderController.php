@@ -91,10 +91,8 @@ class OrderController extends Controller
         $dataProvider = $searchModel->search($queryParams);
 
         $basketOrders = new ActiveDataProvider([
-            'query' => Order::find()->where(['customer_id' => $customer->id]),
+            'query' => $customer->getOrders()->andWhere(['status' => 0]),
         ]);
-
-
 
 
         return $this->render('create', [

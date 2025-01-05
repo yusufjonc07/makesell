@@ -17,6 +17,7 @@ use Yii;
  * @property string $updated_at
  *
  * @property Invoice[] $invoices
+ * @property Order[] $orders
  */
 class Customer extends \yii\db\ActiveRecord
 {
@@ -34,7 +35,7 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email'], 'required'],
+            [['balance', 'status'], 'required'],
             [['balance'], 'number'],
             [['status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -50,14 +51,14 @@ class Customer extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'balance' => 'Balance',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Name'),
+            'email' => Yii::t('app', 'Email'),
+            'phone' => Yii::t('app', 'Phone'),
+            'balance' => Yii::t('app', 'Balance'),
+            'status' => Yii::t('app', 'Status'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
         ];
     }
 
@@ -69,5 +70,15 @@ class Customer extends \yii\db\ActiveRecord
     public function getInvoices()
     {
         return $this->hasMany(Invoice::class, ['customer_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Orders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['customer_id' => 'id']);
     }
 }

@@ -35,9 +35,10 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'number', 'status', 'address', 'comment'], 'required'],
+            [['customer_id', 'number', 'address', 'comment'], 'required'],
             [['customer_id', 'number', 'status'], 'integer'],
             [['total_value'], 'number'],
+            ['status', 'default', 'value' => 0],
             [['created_at', 'updated_at'], 'safe'],
             [['address', 'comment'], 'string', 'max' => 255],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
@@ -60,6 +61,19 @@ class Invoice extends \yii\db\ActiveRecord
             'address' => Yii::t('app', 'Address'),
             'comment' => Yii::t('app', 'Comment'),
         ];
+    }
+
+    public function generateNumber(){
+
+        $this->number = random_int(123456, 999999);
+
+        $invoice = Invoice::findOne(['number'=>$this->number]);
+
+        if($invoice){
+            $this->generateNumber();
+        }
+
+        return $this;
     }
 
     /**
