@@ -84,7 +84,13 @@ class InvoiceController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->generateNumber()->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+
+                Order::updateAll([
+                    'status'=>1,
+                    'invoice_id'=>$model->id
+                ], ['in', 'id', $invoiceItems]);
+
+                    return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
