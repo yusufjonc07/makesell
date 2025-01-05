@@ -18,9 +18,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <div class="d-flex justify-content-between">
+        <div>
+            <?= $this->render('/product/_search', ['model'=>$searchModel]) ?>
+        </div>
+        <div class="d-flex align-items-end">
+            <?= $this->render('_basket', ['dataProvider'=>$basketOrders]) ?>
+        </div>
+    </div>
+
     <?= $this->render('/product/_list', [
         'dataProvider' => $dataProvider,
-        'searchModel' => $searchModel,
+        'searchModel' => null,
         'footer' => function ($model) use ($order) {
                 $order->product_id = $model->id;
                 $order->price = $model->price;

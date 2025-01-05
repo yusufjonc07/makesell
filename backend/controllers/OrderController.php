@@ -6,6 +6,7 @@ use backend\models\Customer;
 use backend\models\Order;
 use backend\models\OrderSearch;
 use backend\models\ProductSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -89,10 +90,18 @@ class OrderController extends Controller
 
         $dataProvider = $searchModel->search($queryParams);
 
+        $basketOrders = new ActiveDataProvider([
+            'query' => Order::find()->where(['customer_id' => $customer->id]),
+        ]);
+
+
+
+
         return $this->render('create', [
             'customer' => $customer,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'basketOrders' => $basketOrders,
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Stock;
 use backend\models\StockSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

@@ -16,13 +16,13 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-6 col-md-4">
             <?= $form->field($model, 'name') ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-6 col-md-4">
             <?= $form->field($model, 'price') ?>
         </div>
-        <div class="col-md-4  d-flex align-items-end gap-2">
+        <div class="col-md-4 mt-2 d-flex align-items-end gap-2">
             <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
             <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
         </div>

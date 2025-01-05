@@ -12,7 +12,7 @@ use yii\widgets\ListView;
 $footer = $footer ?? null;
 ?>
 
-<?= $this->render('_search', ['model' => $searchModel]); ?>
+<?= $searchModel ? $this->render('_search', ['model' => $searchModel]) : ''; ?>
 
 <?= ListView::widget([
     'dataProvider' => $dataProvider,
