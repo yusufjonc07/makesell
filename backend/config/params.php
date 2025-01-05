@@ -1,6 +1,6 @@
 <?php
 return [
     'adminEmail' => 'admin@example.com',
-    'currency'=>'USD',
+    'currency'=>'EUR',
     'bsVersion' => '5.x',
 ];

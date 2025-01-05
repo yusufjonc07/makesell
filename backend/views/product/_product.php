@@ -10,7 +10,7 @@ use yii\bootstrap5\Html;
 
 <div class="card h-100 position-relative">
    
-    <?= Html::img("@web/uploads/$model->image", ['class' => 'card-img-top h-100', 'style' => 'background-image:url(https://i0.wp.com/mckameyanimalcenter.org/wp-content/uploads/2022/05/placeholder-661.png); background-size:cover;']) ?>
+    <?= Html::img("@web/uploads/$model->image", ['class' => 'card-img-left h-100', 'style' => 'background-image:url(https://i0.wp.com/mckameyanimalcenter.org/wp-content/uploads/2022/05/placeholder-661.png); background-size:cover;']) ?>
     <div class="card-body">
         <h5 class="card-title"><?= $model->name ?></h5>
         <span class="card-text text-primary">For:
