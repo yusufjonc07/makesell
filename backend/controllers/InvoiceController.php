@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Invoice;
 use backend\models\InvoiceSearch;
 use backend\models\Order;
+use Mpdf\Mpdf;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -63,6 +64,32 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function actionDownload($number)
+    {
+
+
+        $this->layout = 'blank';
+        $model = Invoice::findOne(['number' => $number]);
+       
+        $html = $this->renderPartial('view', compact('model'));
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+        ]);
+        $mpdf->SetMargins(0, 0, 10);
+        $mpdf->SetDisplayMode('fullpage', 'two');
+
+
+        $mpdf->SetColumns(2);
+        $mpdf->WriteHTML($html);
+        $mpdf->AddColumn();
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+        exit;
+    }
+
+
     /**
      * Creates a new Invoice model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -75,8 +102,12 @@ class InvoiceController extends Controller
 
 
         $orders = new ActiveDataProvider([
-            'query' => Order::find()->where(['status' => 0])->andWhere(['in', 'id',$invoiceItems]),
+            'query' => Order::find()->where(['status' => 0])->andWhere(['in', 'id', $invoiceItems]),
         ]);
+
+        if(!$orders->models){
+            return $this->redirect(['/customer/index']);
+        }
 
         $model = new Invoice();
         $model->customer_id = $orders->models[0]->customer_id;
@@ -86,11 +117,11 @@ class InvoiceController extends Controller
             if ($model->load($this->request->post()) && $model->generateNumber()->save()) {
 
                 Order::updateAll([
-                    'status'=>1,
-                    'invoice_id'=>$model->id
+                    'status' => 1,
+                    'invoice_id' => $model->id
                 ], ['in', 'id', $invoiceItems]);
 
-                    return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();

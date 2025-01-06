@@ -2,6 +2,12 @@
 
 namespace backend\models;
 
+
+use chillerlan\QRCode\Data\QRMatrix;
+use chillerlan\QRCode\Output\QRGdImageWEBP;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
+
 use Yii;
 
 /**
@@ -63,17 +69,53 @@ class Invoice extends \yii\db\ActiveRecord
         ];
     }
 
-    public function generateNumber(){
+    public function generateNumber()
+    {
 
         $this->number = random_int(123456, 999999);
 
-        $invoice = Invoice::findOne(['number'=>$this->number]);
+        $invoice = Invoice::findOne(['number' => $this->number]);
 
-        if($invoice){
+        if ($invoice) {
             $this->generateNumber();
         }
 
         return $this;
+    }
+
+    public function getQrCode()
+    {
+        $options = new QROptions();
+
+        // $outputInterface can be one of the classes listed in `QROutputInterface::MODES`
+        $options->outputInterface = QRGdImageWEBP::class;
+        $options->quality = 90;
+        // the size of one qr module in pixels
+        $options->scale = 20;
+        $options->bgColor = [200, 150, 200];
+        $options->imageTransparent = true;
+        // the color that will be set transparent
+// @see https://www.php.net/manual/en/function.imagecolortransparent
+        $options->transparencyColor = [200, 150, 200];
+        $options->drawCircularModules = true;
+        $options->drawLightModules = true;
+        $options->circleRadius = 0.4;
+        $options->keepAsSquare = [
+            QRMatrix::M_FINDER_DARK,
+            QRMatrix::M_FINDER_DOT,
+            QRMatrix::M_ALIGNMENT_DARK,
+        ];
+        $options->moduleValues = [
+            QRMatrix::M_FINDER_DARK => [0, 63, 255], // dark (true)
+            QRMatrix::M_FINDER_DOT => [0, 63, 255], // finder dot, dark (true)
+            QRMatrix::M_FINDER => [233, 233, 233], // light (false)
+            QRMatrix::M_ALIGNMENT_DARK => [255, 0, 255],
+            QRMatrix::M_ALIGNMENT => [233, 233, 233],
+            QRMatrix::M_DATA_DARK => [0, 0, 0],
+            QRMatrix::M_DATA => [233, 233, 233],
+        ];
+
+        return (new QRCode($options))->render(Yii::$app->request->absoluteUrl);
     }
 
     /**
@@ -84,5 +126,14 @@ class Invoice extends \yii\db\ActiveRecord
     public function getCustomer()
     {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
+    }
+    /**
+     * Gets query for [[Orders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['invoice_id' => 'id']);
     }
 }

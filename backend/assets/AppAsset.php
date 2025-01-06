@@ -12,6 +12,12 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        [
+            'href' => "/static/brand.png",
+            'rel' => 'icon',
+            'sizes' => '60x32',
+            'style' => 'object-fit:contain;'
+        ],
         'css/site.css',
     ];
     public $js = [

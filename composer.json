@@ -27,7 +27,9 @@
     "2amigos/yii2-chartjs-widget": "~2.0",
     "kartik-v/yii2-widget-select2": "dev-master",
     "wbraganca/yii2-dynamicform": "*",
-    "kartik-v/yii2-widget-fileinput": "dev-master"
+    "kartik-v/yii2-widget-fileinput": "dev-master",
+    "mpdf/mpdf": "*",
+    "chillerlan/php-qrcode": "^5.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
