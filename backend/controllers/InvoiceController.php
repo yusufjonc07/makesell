@@ -29,6 +29,7 @@ class InvoiceController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'confirm' => ['POST'],
                     ],
                 ],
             ]
@@ -70,7 +71,7 @@ class InvoiceController extends Controller
 
         $this->layout = 'blank';
         $model = Invoice::findOne(['number' => $number]);
-       
+
         $html = $this->renderPartial('view', compact('model'));
 
         $mpdf = new Mpdf([
@@ -105,23 +106,22 @@ class InvoiceController extends Controller
             'query' => Order::find()->where(['status' => 0])->andWhere(['in', 'id', $invoiceItems]),
         ]);
 
-        if(!$orders->models){
+        if (!$orders->models) {
             return $this->redirect(['/customer/index']);
         }
 
         $model = new Invoice();
         $model->customer_id = $orders->models[0]->customer_id;
         $model->total_value = $orders->query->sum('price*qty');
+        $is_products_enough = $model->checkStock($orders->models);
 
-        if ($this->request->isPost) {
+        if ($this->request->isPost && $is_products_enough) {
             if ($model->load($this->request->post()) && $model->generateNumber()->save()) {
 
-                Order::updateAll([
-                    'status' => 1,
-                    'invoice_id' => $model->id
-                ], ['in', 'id', $invoiceItems]);
+                $model->minusStock($orders->models)->calcBalance();
 
                 return $this->redirect(['view', 'id' => $model->id]);
+
             }
         } else {
             $model->loadDefaultValues();
@@ -164,6 +164,19 @@ class InvoiceController extends Controller
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Confoirms an existing Invoice model.
+     * If confirmation is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionConfirm($id)
+    {
+        $this->findModel($id)->plusBalance()->confirm();
         return $this->redirect(['index']);
     }
 

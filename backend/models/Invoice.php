@@ -3,12 +3,14 @@
 namespace backend\models;
 
 
+use backend\components\Steppy;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QRGdImageWEBP;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 
 use Yii;
+use yii\web\BadRequestHttpException;
 
 /**
  * This is the model class for table "invoice".
@@ -24,6 +26,7 @@ use Yii;
  * @property string $comment
  *
  * @property Customer $customer
+ * @property Order[] $orders
  */
 class Invoice extends \yii\db\ActiveRecord
 {
@@ -95,7 +98,6 @@ class Invoice extends \yii\db\ActiveRecord
         $options->bgColor = [200, 150, 200];
         $options->imageTransparent = true;
         // the color that will be set transparent
-// @see https://www.php.net/manual/en/function.imagecolortransparent
         $options->transparencyColor = [200, 150, 200];
         $options->drawCircularModules = true;
         $options->drawLightModules = true;
@@ -116,6 +118,86 @@ class Invoice extends \yii\db\ActiveRecord
         ];
 
         return (new QRCode($options))->render(Yii::$app->request->absoluteUrl);
+    }
+
+
+
+    public function checkStock($orders)
+    {
+
+        foreach ($orders as $order) {
+            $steppy = new Steppy();
+            $steppy->query = $order->product->getStocks();
+            $steppy->column = 'qty';
+            $steppy->quantity = $order->qty;
+            if ($steppy->minus(null, false) !== true) {
+                throw new BadRequestHttpException(Yii::t('app', 'Product is not enoung on the stock!'));
+            }
+        }
+
+        return true;
+
+    }
+
+    public function minusStock($orders)
+    {
+
+        foreach ($orders as $order) {
+            $steppy = new Steppy();
+            $steppy->query = $order->product->getStocks();
+            $steppy->column = 'qty';
+            $steppy->quantity = $order->qty;
+
+            if ($steppy->minus()) {
+                $order->status = 1;
+                $order->invoice_id = $this->id;
+                $order->save();
+            }
+        }
+
+        return $this;
+
+    }
+
+    public function minusBalance(){
+        $this->customer->balance -= $this->total_value;
+        $this->customer->save();
+        return $this;
+    }
+
+    public function plusBalance(){
+        $this->customer->balance += $this->total_value;
+        $this->customer->save();
+        return $this;
+    }
+
+    public function beforeDelete()
+    {
+        foreach ($this->orders as $order) {
+            $steppy = new Steppy();
+            $steppy->query = Stock::find()->where([
+                'product_id' => $order->product_id,
+                'price' => $order->product->price
+            ]);
+            $steppy->column = 'qty';
+            $steppy->quantity = $order->qty;
+            $steppy->plus();
+            $order->delete();
+        }
+        return parent::beforeDelete();
+    }
+
+
+    /**
+     * Confirmation for [[Invoice]].
+     *
+     * @return bool
+     */
+
+    public function confirm()
+    {
+        $this->status = 1;
+        return $this->save();
     }
 
     /**
