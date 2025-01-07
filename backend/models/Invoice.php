@@ -72,6 +72,17 @@ class Invoice extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getStatusColor()
+    {
+        return $this->status == 0 ? 'danger' : 'success';
+    }
+
+    public function getStatusLabel()
+    {
+        return $this->status == 0 ? 'Pending' : 'Confirmed';
+    }
+    
+
     public function generateNumber()
     {
 

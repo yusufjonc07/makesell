@@ -28,16 +28,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'customer_id',
-            'total_value',
+            'number',
+            [
+                'attribute' => 'customer_id',
+                'value' => 'customer.name',
+            ],
+            [
+                'format' => ['currency', Yii::$app->params['currency']],
+                'attribute' => 'total_value',
+            ],
             'created_at',
-            'updated_at',
-            //'number',
-            //'status',
-            //'address',
-            //'comment',
+            [
+                
+                'attribute' => 'status',
+                'format'=>'raw',
+                'value' => function ($model) {
+                    return Html::tag('span', $model->getStatusLabel(), ['class'=>'badge bg-'.$model->getStatusColor()]);
+                },
+                'filter'=>[
+                    0=>'Pending',
+                    1=>'Confirmed',
+                ]
+            ],
+            'address',
+            'comment',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Invoice $model, $key, $index, $column) {

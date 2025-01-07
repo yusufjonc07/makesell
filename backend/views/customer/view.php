@@ -1,7 +1,11 @@
 <?php
 
+use backend\models\Invoice;
 use common\widgets\ProfileView;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -26,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -40,6 +44,43 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
+
+    <h1><?= Yii::t('app', 'Invoices'); ?></h1>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'number',
+            [
+                'attribute' => 'total_value',
+                'value' => function ($model) {
+                    return Yii::$app->formatter->asCurrency($model->total_value, Yii::$app->params['currency']);
+                }
+            ],
+            'created_at',
+            [
+                
+                'attribute' => 'status',
+                'format'=>'raw',
+                'value' => function ($model) {
+                    return Html::tag('span', $model->getStatusLabel(), ['class'=>'badge bg-'.$model->getStatusColor()]);
+                }
+            ],
+            [
+                'attribute' => 'address',
+                'contentOptions' => ['style' => 'max-width: 250px']
+            ],
+            'comment',
+            [
+                'class' => ActionColumn::className(),
+                'template' => "{view} {delete}",
+                'urlCreator' => function ($action, Invoice $model, $key, $index, $column) {
+                    return Url::toRoute(["/invoice/$action", 'id' => $model->id]);
+                }
+            ],
+        ],
+    ]); ?>
+
 
 
 

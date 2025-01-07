@@ -118,7 +118,7 @@ class InvoiceController extends Controller
         if ($this->request->isPost && $is_products_enough) {
             if ($model->load($this->request->post()) && $model->generateNumber()->save()) {
 
-                $model->minusStock($orders->models)->calcBalance();
+                $model->minusStock($orders->models)->minusBalance();
 
                 return $this->redirect(['view', 'id' => $model->id]);
 
@@ -162,9 +162,11 @@ class InvoiceController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $customer_id = $model->customer_id;
+        $model ->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['/customer/view', 'id' => $customer_id ]);
     }
 
     /**
@@ -176,8 +178,9 @@ class InvoiceController extends Controller
      */
     public function actionConfirm($id)
     {
-        $this->findModel($id)->plusBalance()->confirm();
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->plusBalance()->confirm();
+        return $this->redirect(['/customer/view', 'id' => $model->customer_id]);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Customer;
 use backend\models\CustomerSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -55,8 +56,16 @@ class CustomerController extends Controller
      */
     public function actionView($id)
     {
+
+        $model = $this->findModel($id);
+
+        $invoices = new ActiveDataProvider([
+            'query' => $model->getInvoices(),
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider'=>$invoices
         ]);
     }
 
