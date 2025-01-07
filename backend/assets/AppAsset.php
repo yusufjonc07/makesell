@@ -19,6 +19,7 @@ class AppAsset extends AssetBundle
             'style' => 'object-fit:contain;'
         ],
         'css/site.css',
+        'css/bootstrap.min.css',
     ];
     public $js = [
     ];

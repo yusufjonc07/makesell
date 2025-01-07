@@ -129,38 +129,7 @@ $this->title = 'Dashboard';
                         ],
                         'data' => [
                             'labels' => ["January", "February", "March", "April", "May", "June", "July"],
-                            'datasets' => [
-                                [
-                                    'label' => "Production",
-                                    'backgroundColor' => "rgba(179,181,198,0.2)",
-                                    'borderColor' => "rgb(56, 63, 123)",
-                                    'pointBackgroundColor' => "rgba(179,181,198,1)",
-                                    'pointBorderColor' => "#fff",
-                                    'pointHoverBackgroundColor' => "#fff",
-                                    'pointHoverBorderColor' => "rgba(179,181,198,1)",
-                                    'data' => [65, 59, 90, 81, 56, 55, 40]
-                                ],
-                                [
-                                    'label' => "Sales",
-                                    'backgroundColor' => "rgba(85, 164, 81, 0.55)",
-                                    'borderColor' => "rgb(58, 126, 93)",
-                                    'pointBackgroundColor' => "rgba(85, 164, 81, 0.55)",
-                                    'pointBorderColor' => "#fff",
-                                    'pointHoverBackgroundColor' => "#fff",
-                                    'pointHoverBorderColor' => "rgba(255,99,132,1)",
-                                    'data' => [28, 48, 40, 19, 96, 27, 100]
-                                ],
-                                [
-                                    'label' => "Supply",
-                                    'backgroundColor' => "rgba(153, 164, 81, 0.55)",
-                                    'borderColor' => "rgb(115, 126, 58)",
-                                    'pointBackgroundColor' => "rgba(85, 164, 81, 0.55)",
-                                    'pointBorderColor' => "#fff",
-                                    'pointHoverBackgroundColor' => "#fff",
-                                    'pointHoverBorderColor' => "rgba(255,99,132,1)",
-                                    'data' => [28, 48, 40, 19, 96, 27, 100]
-                                ],
-                            ]
+                            'datasets' => $datasets,
                         ]
                     ]);
                     ?>

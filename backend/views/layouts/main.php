@@ -22,6 +22,11 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        :root{
+    --bs-primary: #c3fe75 !important;
+}
+    </style>
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -30,10 +35,10 @@ AppAsset::register($this);
     <header>
         <?php
         NavBar::begin([
-            'brandLabel' => Yii::$app->name,
+            'brandLabel' => Html::img("@web/static/transparent.png", ['height' => 40]),
             'brandUrl' => Yii::$app->homeUrl,
             'options' => [
-                'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
+                'class' => 'navbar navbar-expand-md navbar-light bg-light fixed-top',
             ],
         ]);
         $menuItems = [
