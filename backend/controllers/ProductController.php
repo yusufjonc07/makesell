@@ -31,6 +31,15 @@ class ProductController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Only authenticated users.
+                        ],
+                    ],
+                ],
             ]
         );
     }
@@ -45,6 +54,8 @@ class ProductController extends Controller
         $searchModel = new ProductSearch();
 
         $dataProvider = $searchModel->search($this->request->queryParams);
+
+        
 
         return $this->render('index', [
             'searchModel' => $searchModel,

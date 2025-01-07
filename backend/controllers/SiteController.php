@@ -2,6 +2,10 @@
 
 namespace backend\controllers;
 
+use backend\models\Customer;
+use backend\models\Invoice;
+use backend\models\Order;
+use backend\models\Production;
 use common\models\LoginForm;
 use Yii;
 use yii\filters\VerbFilter;
@@ -62,7 +66,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        $date_filter = ['>=', 'created_at', date('Y-m-01')];
+
+        $invoices = Invoice::find()->where($date_filter)->count();
+        $clients = Customer::find()->where($date_filter)->count();
+        $production = Production::find()->where($date_filter)->sum("qty*price");
+        $sales = Order::find()->where($date_filter)->andWhere(['status' => 1])->sum("qty*price");
+        $rate =  $sales / $production * 100;
+
+        return $this->render('index', compact('invoices', 'clients', 'production', 'sales', 'rate'));
     }
 
     /**

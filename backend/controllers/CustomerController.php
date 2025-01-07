@@ -19,6 +19,7 @@ class CustomerController extends Controller
      */
     public function behaviors()
     {
+       
         return array_merge(
             parent::behaviors(),
             [
@@ -26,6 +27,15 @@ class CustomerController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Only authenticated users.
+                        ],
                     ],
                 ],
             ]
