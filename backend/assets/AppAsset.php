@@ -18,10 +18,15 @@ class AppAsset extends AssetBundle
             'sizes' => '60x32',
             'style' => 'object-fit:contain;'
         ],
+        [
+            'href' => 'manifest.json',
+            'rel' => 'manifest',
+        ],
         'css/site.css',
         'css/bootstrap.min.css',
     ];
     public $js = [
+        'js/app.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -8,6 +8,7 @@ use backend\models\Order;
 use backend\models\Production;
 use common\models\LoginForm;
 use Yii;
+use yii\captcha\CaptchaAction;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -28,7 +29,7 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'captcha', 'no-internet'],
                         'allow' => true,
                     ],
                     [
@@ -56,6 +57,10 @@ class SiteController extends Controller
             'error' => [
                 'class' => \yii\web\ErrorAction::class,
             ],
+            'captcha' => [
+                'class' => CaptchaAction::className(),
+                'fixedVerifyCode' => YII_ENV_TEST ? 'dwofneoi' : null,
+            ],
         ];
     }
 
@@ -74,7 +79,7 @@ class SiteController extends Controller
         $production = Production::find()->where($date_filter)->sum("qty*price");
         $sales = Order::find()->where($date_filter)->andWhere(['status' => 1])->sum("qty*price");
 
-        $rate =  $sales / $production * 100;
+        $rate = $sales / $production * 100;
 
         $datasets = [
             [
@@ -147,5 +152,15 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    /**
+     * Displays a blank page when no internet connection is available.
+     */
+
+    public function actionNoInternet()
+    {
+        $this->layout = 'blank';
+        return $this->render('no-internet');
     }
 }

@@ -1,0 +1,15 @@
+{
+    "name": "MakeSell",
+    "short_name": "MakeSell",
+    "start_url": "/",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "display": "minimal-ui",
+    "background_color": "#ffffff",
+    "theme_color": "#c1ff72",
+    "icons": [{
+      "src": "/static/dark.png",
+      "sizes": "500x500",
+      "type": "image/png"
+    }],
+    "orientation": "portrait-primary"
+  }
