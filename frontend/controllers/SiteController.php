@@ -81,9 +81,24 @@ class SiteController extends Controller
             ->joinWith('stocks')
             ->groupBy('product.id')
             ->orderBy("SUM(stock.qty) DESC")
+            ->limit(5)
             ->all();
 
-        return $this->render('index', compact('introProducts', ));
+        $featuredProducts = Product::find()->select('image, name, product.id, product.price')
+            ->where(['and', ["<", "LENGTH(name)", 20], ['>', 'LENGTH(image)', 0]])
+            ->joinWith('orders')
+            ->groupBy('product.id')
+            ->orderBy("COUNT(order.id) DESC")
+            ->limit(5)
+            ->all();
+
+        $latestProducts = Product::find()->select('image, name, product.id, product.price')
+            ->where(['and', ["<", "LENGTH(name)", 20], ['>', 'LENGTH(image)', 0]])
+            ->orderBy("created_at DESC")
+            ->limit(5)
+            ->all();
+
+        return $this->render('index', compact('introProducts', 'featuredProducts', 'latestProducts'));
     }
 
     /**
