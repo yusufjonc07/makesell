@@ -29,14 +29,7 @@
                   <p class="fs-7" id="qw-description">Buy good shoes and a good mattress, because when you're not in one you're in the
                     other. With four pairs of shoes, I can travel the world.</p>
                 </div>
-                <ul class="select">
-                  <li>
-                    <strong>Stock quantity:</strong> <span id="qw-qty"></span>
-                  </li>
-                  <li>
-                    <strong>Active orders:</strong><span id="qw-active"></span>
-                  </li>
-                </ul>
+               
                 <div class="variations-form shopify-cart">
                   <div class="row">
                     <div class="col-md-6">
@@ -61,17 +54,15 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <a rel="nofollow" data-no-instant="" href="#" class="out-stock button">Out of stock</a>
                       <button type="submit" class="btn btn-medium btn-black hvr-sweep-to-right" id="qw-add_btn">Add to cart</button>
                     </div>
                   </div>
                 </div>
-                <!-- variations-form -->
                 <div class="categories d-flex flex-wrap pt-3">
-                  <strong class="pe-2">Categories:</strong>
-                  <a href="#" title="categories">Clothing,</a>
-                  <a href="#" title="categories">Men's Clothes,</a>
-                  <a href="#" title="categories">Tops & T-Shirts</a>
+                  <strong class="pe-2">Stock quantity:</strong>
+                  <span id="qw-qty"></span>
+                  <strong class="px-2">Active orders:</strong>
+                  <span id="qw-active"></span>
                 </div>
               </div>
             </div>

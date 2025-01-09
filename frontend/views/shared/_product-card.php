@@ -46,6 +46,8 @@ $this->registerJs(<<<JS
     $('#qw-name').text(data.name);
     $('#qw-price').text(data.price);
     $('#qw-description').text(data.description);
+    $('#qw-qty').text(data.qty);
+    $('#qw-active').text(data.active);
     $('#qw-add_btn').attr('data-id', data.id);
 
     console.log(data);
