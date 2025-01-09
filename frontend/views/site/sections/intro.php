@@ -13,7 +13,7 @@
                 <div class="card d-flex flex-row align-items-end border-0 jarallax-keep-img bg-dark">
                   <img src="http://localhost:8009/uploads/<?= $product->image; ?>" alt="shoes"
                     class="img-fluid jarallax-img ">
-                  <div class="cart-concern p-3 m-3 p-lg-5 m-lg-5">
+                  <div class="cart-concern p-3 m-3 py-lg-5 m-lg-5">
                     <h2 class="card-title style-2 display-4 light"><?= $product->name ?></h2>
                     <a href="index.html"
                       class="text-uppercase light mt-3 d-inline-block text-hover fw-bold light-border">Shop Now</a>

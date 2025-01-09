@@ -42,7 +42,7 @@ body {
   --bs-body-color: #8f8f8f;
   --bs-body-color-rgb: 143, 143, 143;
 
-  --bs-primary: #ce071e;
+  --bs-primary: #c3fe75;
   --bs-primary-dark: #8d0414;
   --bs-secondary: #6c757d;
   --bs-black: #111;
@@ -678,7 +678,7 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--bs-red);
+  background: var(--bs-light);
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transform-origin: 0 50%;

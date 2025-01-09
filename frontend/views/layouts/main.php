@@ -38,6 +38,7 @@ AppAsset::register($this);
     // echo $this->render('/shared/_loader');
     echo $this->render('/shared/_search-box');
     echo $this->render('/shared/_header');
+    echo $this->render('/shared/_cart-view');
 
     ?>
 

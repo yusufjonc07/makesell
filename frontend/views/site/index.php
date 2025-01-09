@@ -5,6 +5,10 @@
 
 $this->title = 'My Yii Application';
 
+
+echo $this->render('/shared/_quick-view');
+
+
 echo $this->render('sections/intro', [
     'products'=>$introProducts
 ]);

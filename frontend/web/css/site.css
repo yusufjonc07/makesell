@@ -32,7 +32,6 @@ body {
   --swiper-theme-color: var(--bs-primary);
   --swiper-pagination-bottom: 0;
 
-  --custom-easing: cubic-bezier(0.17, 0.67, 0.83, 0.67);
 
   /* bootstrap */
   --bs-body-font-family: "Inter", Roboto, sans-serif;
@@ -42,9 +41,10 @@ body {
   --bs-body-color: #8f8f8f;
   --bs-body-color-rgb: 143, 143, 143;
 
-  --bs-primary: #ce071e;
-  --bs-primary-dark: #8d0414;
+  --bs-primary: #c3fe75;
+  --bs-primary-dark: #95cd4c;
   --bs-secondary: #6c757d;
+  --bs-red: darkgreen;
   --bs-black: #111;
   --bs-light: #f1f1f0;
   --bs-dark: #212529;
