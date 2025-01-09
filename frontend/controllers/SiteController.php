@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use backend\models\Product;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -75,7 +76,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $introProducts = Product::find()->select('image, name, product.id')
+            ->where(['and', ["<", "LENGTH(name)", 20], ['>', 'LENGTH(image)', 0]])
+            ->joinWith('stocks')
+            ->groupBy('product.id')
+            ->orderBy("SUM(stock.qty) DESC")
+            ->all();
+
+        return $this->render('index', compact('introProducts', ));
     }
 
     /**
