@@ -9,8 +9,9 @@ class CartController extends Controller
 {
     public function actionIndex()
     {
+        $this->response->format = 'json';
         $cart = Yii::$app->session->get('cart', []);
-        return $this->render('index', ['cart' => $cart]);
+        return $cart;
     }
 
     public function actionAdd($id)

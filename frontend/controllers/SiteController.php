@@ -7,6 +7,7 @@ use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\db\ActiveQuery;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -69,6 +70,13 @@ class SiteController extends Controller
         ];
     }
 
+    private function sortLimitExecute(ActiveQuery $query, $sortBy, $limit = 5)
+    {
+        return $query->orderBy($sortBy)->limit($limit)->createCommand()->queryAll();
+    }
+
+
+
     /**
      * Displays homepage.
      *
@@ -76,27 +84,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $introProducts = Product::find()->select('image, name, product.id')
-            ->where(['and', ["<", "LENGTH(name)", 20], ['>', 'LENGTH(image)', 0]])
-            ->joinWith('stocks')
-            ->groupBy('product.id')
-            ->orderBy("SUM(stock.qty) DESC")
-            ->limit(5)
-            ->all();
 
-        $featuredProducts = Product::find()->select('image, name, product.id, product.price')
-            ->where(['and', ["<", "LENGTH(name)", 20], ['>', 'LENGTH(image)', 0]])
-            ->joinWith('orders')
-            ->groupBy('product.id')
-            ->orderBy("COUNT(order.id) DESC")
-            ->limit(5)
-            ->all();
 
-        $latestProducts = Product::find()->select('image, name, product.id, product.price')
+        $productQuery = Product::find()->select('image, name, product.id, description, product.price, SUM(stock.qty) qty, SUM(order.qty) active')
             ->where(['and', ["<", "LENGTH(name)", 20], ['>', 'LENGTH(image)', 0]])
-            ->orderBy("created_at DESC")
-            ->limit(5)
-            ->all();
+            ->joinWith(['stocks', 'orders'])
+            ->groupBy('product.id');
+
+
+        $introProducts = $this->sortLimitExecute($productQuery, 'SUM(stock.qty) DESC');
+        $featuredProducts = $this->sortLimitExecute($productQuery, 'COUNT(order.id) DESC');
+        $latestProducts = $this->sortLimitExecute($productQuery, 'product.created_at DESC');
 
         return $this->render('index', compact('introProducts', 'featuredProducts', 'latestProducts'));
     }

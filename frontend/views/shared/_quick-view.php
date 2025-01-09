@@ -1,4 +1,9 @@
+<?php
 
+/** @var yii\web\View $this */
+
+
+?>
   <!-- quick view -->
   <div class="modal fade" id="modaltoggle" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered">
@@ -6,30 +11,30 @@
         <div class="modal-body">
           <div class="col-lg-12 col-md-12 me-3">
             <div class="image-holder">
-              <img src="images/summary-item1.jpg" alt="Shoes">
+              <img id="qw-image" alt="Shoes">
             </div>
           </div>
           <div class="col-lg-12 col-md-12">
             <div class="summary">
               <div class="summary-content fs-6">
                 <div class="product-header d-flex justify-content-between mt-4">
-                  <h3 class="display-7">Running Shoes For Men</h3>
+                  <h3 class="display-7" id="qw-name">Running Shoes For Men</h3>
                   <div class="modal-close-btn">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                   </div>
                 </div>
-                <span class="product-price fs-3">$99</span>
+                <span class="product-price fs-3" id="qw-price">$99</span>
                 <div class="product-details">
-                  <p class="fs-7">Buy good shoes and a good mattress, because when you're not in one you're in the
+                  <p class="fs-7" id="qw-description">Buy good shoes and a good mattress, because when you're not in one you're in the
                     other. With four pairs of shoes, I can travel the world.</p>
                 </div>
                 <ul class="select">
                   <li>
-                    <strong>Colour Shown:</strong> Red, White, Black
+                    <strong>Stock quantity:</strong> <span id="qw-qty"></span>
                   </li>
                   <li>
-                    <strong>Style:</strong> SM3018-100
+                    <strong>Active orders:</strong><span id="qw-active"></span>
                   </li>
                 </ul>
                 <div class="variations-form shopify-cart">
@@ -57,7 +62,7 @@
                     </div>
                     <div class="col-md-6">
                       <a rel="nofollow" data-no-instant="" href="#" class="out-stock button">Out of stock</a>
-                      <button type="submit" class="btn btn-medium btn-black hvr-sweep-to-right">Add to cart</button>
+                      <button type="submit" class="btn btn-medium btn-black hvr-sweep-to-right" id="qw-add_btn">Add to cart</button>
                     </div>
                   </div>
                 </div>
@@ -76,3 +81,22 @@
     </div>
   </div>
   <!-- / quick view -->
+
+
+<?php
+
+$this->registerJs(<<<JS
+  $("#modaltoggle").on("shown.bs.modal", function(){
+
+    // Get the button that triggered the modal
+
+    // Extract data from HTML element attributes
+    
+
+    // Extract custom data attribute (if any)
+    // var buttonData = button.data('name');
+
+
+
+  }) 
+JS) ?>
