@@ -1,3 +1,5 @@
+
+  <!-- cart view -->
 <div class="modal fade" id="modallong" tabindex="-1" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered">
       <div class="modal-content">
@@ -113,4 +115,3 @@
       </div>
     </div>
   </div>
-  <!-- cart view -->
