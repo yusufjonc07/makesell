@@ -4,6 +4,7 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
+use common\widgets\LanguageSwitcher;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
@@ -25,7 +26,10 @@ $this->title = Yii::t('app', 'Login');
                                 </a>
                             </div>
                             <div class="auth-content my-auto">
-                                <h1><?= Html::encode(Yii::t('app', $this->title)) ?></h1>
+                                <h1><?= Html::encode(Yii::t('app', $this->title)) ?>
+                            
+                                
+                            </h1>
 
                                 <p><?= Yii::t('app', 'Please fill out the following fields to login:') ?></p>
 
@@ -46,8 +50,11 @@ $this->title = Yii::t('app', 'Login');
 
                                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-                                <div class="form-group">
+                                <div class="form-group d-flex justify-content-between align-items-center">
                                     <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                                    <div>
+                                    <?= LanguageSwitcher::widget(['layout'=>'inline']); ?>
+                                    </div>
                                 </div>
 
                                 <?php ActiveForm::end(); ?>
