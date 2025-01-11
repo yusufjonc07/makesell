@@ -160,6 +160,9 @@ class SiteController extends Controller
 
     public function actionNoInternet()
     {
+
+        
+
         $this->layout = 'blank';
         return $this->render('no-internet');
     }
