@@ -23,7 +23,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="glyphicon glyphicon-envelope"></i> Addresses</h4></div>
+        <div class="panel-heading"><h4><i class="glyphicon glyphicon-envelope"></i> <?= Yii::t("app", "Addresses"); ?></h4></div>
         <div class="panel-body">
              <?php DynamicFormWidget::begin([
                 'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]

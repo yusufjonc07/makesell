@@ -8,7 +8,7 @@ use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
-$this->title = 'Login';
+$this->title = Yii::t('app', 'Login');
 ?>
 <div class="site-login">
     <div class="container-fluid p-0">
@@ -25,9 +25,9 @@ $this->title = 'Login';
                                 </a>
                             </div>
                             <div class="auth-content my-auto">
-                                <h1><?= Html::encode($this->title) ?></h1>
+                                <h1><?= Html::encode(Yii::t('app', $this->title)) ?></h1>
 
-                                <p>Please fill out the following fields to login:</p>
+                                <p><?= Yii::t('app', 'Please fill out the following fields to login:') ?></p>
 
                                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
@@ -47,7 +47,7 @@ $this->title = 'Login';
                                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                                 <div class="form-group">
-                                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+                                    <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
                                 </div>
 
                                 <?php ActiveForm::end(); ?>
@@ -68,5 +68,4 @@ $this->title = 'Login';
             <!-- end col -->
         </div>
     </div>
-
 </div>

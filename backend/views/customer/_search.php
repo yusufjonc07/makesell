@@ -15,17 +15,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-  
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id')->textInput(['placeholder' => Yii::t('app', 'Enter ID')]) ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => Yii::t('app', 'Enter Name')]) ?>
 
-    <?= $form->field($model, 'email') ?>
+    <?= $form->field($model, 'email')->textInput(['placeholder' => Yii::t('app', 'Enter Email')]) ?>
 
-    <?= $form->field($model, 'phone') ?>
+    <?= $form->field($model, 'phone')->textInput(['placeholder' => Yii::t('app', 'Enter Phone')]) ?>
 
-    <?= $form->field($model, 'balance') ?>
-
+    <?= $form->field($model, 'balance')->textInput(['placeholder' => Yii::t('app', 'Enter Balance')]) ?>
 
     <div class="form-group mt-2">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

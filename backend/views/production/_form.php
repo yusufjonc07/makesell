@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header lead">
-                    Production details
+                    <?= Yii::t("app", "Production details"); ?>
                 </div>
                 <div class="card-body">
                     <?= Html::activeLabel($model, 'product_id') ?>
@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
                             </svg>
                         </a>
                     </div>
-                    <label class="control-label" for="production-product_id">Recipe</label>
+                    <label class="control-label" for="production-product_id"><?= Yii::t("app", "Recipe"); ?></label>
                     <div class="input-group">
                         <?= Html::activeDropDownList($model, 'recipe_id', [], ['class' => 'form-select']) ?>
 
@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
                     </div>
 
 
-                    <label class="control-label" for="production-qty">Quantity</label>
+                    <label class="control-label" for="production-qty"><?= Yii::t("app", "Quantity"); ?></label>
                     <div class="input-group">
                         <?= Html::activeInput('number', $model, 'qty', ['class' => 'form-control']) ?>
                         <span id="production-product-measurement" class="input-group-text">
@@ -76,18 +76,18 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6">
             <div class="card" style="min-height: 100%">
                 <div class="card-header lead">
-                    Ingredient usage
+                    <?= Yii::t("app", "Ingredient usage"); ?>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Norm qty.</th>
-                                <th>Used qty.</th>
+                                <th><?= Yii::t("app", "Product"); ?></th>
+                                <th><?= Yii::t("app", "Norm qty."); ?></th>
+                                <th><?= Yii::t("app", "Used qty."); ?></th>
                             </tr>
                             <tr>
-                                <td colspan="5" id="usage-label">* Please fill production details</td>
+                                <td colspan="5" id="usage-label">* <?= Yii::t("app", "Please fill production details"); ?></td>
                             </tr>
                         </thead>
                         <tbody id="usage"></tbody>

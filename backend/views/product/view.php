@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <div class="d-flex gap-2 align-items-center">
-        <span class="lead">Recipes</span>
+        <span class="lead"><?= Yii::t("app", "Recipes"); ?></span>
         <a href="<?= Url::to(['/recipe/create', 'id'=>$model->id]) ?>">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

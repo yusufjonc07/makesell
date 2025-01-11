@@ -5,7 +5,7 @@ use dosamigos\chartjs\ChartJs;
 
 /** @var yii\web\View $this */
 
-$this->title = 'Dashboard';
+$this->title = Yii::t("app", "Dashboard");
 
 ?>
 <div class="site-index">
@@ -31,7 +31,7 @@ $this->title = 'Dashboard';
                                         <?= $invoices ?>
                                     </h3>
                                     </h3>
-                                    <p class="mb-0">New Invoices</p>
+                                    <p class="mb-0"><?= Yii::t('app', 'New Invoices') ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-rocket text-danger fa-3x"></i>
@@ -55,7 +55,7 @@ $this->title = 'Dashboard';
                                         </svg>
                                         <?= $clients ?>
                                     </h3>
-                                    <p class="mb-0">New Clients</p>
+                                    <p class="mb-0"><?= Yii::t("app", "New Clients"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="far fa-user text-success fa-3x"></i>
@@ -79,7 +79,7 @@ $this->title = 'Dashboard';
                                         </svg>
                                         <?= Yii::$app->formatter->asPercent($rate, 2); ?>
                                     </h3>
-                                    <p class="mb-0">Production Rate</p>
+                                    <p class="mb-0"><?= Yii::t("app", "Production Rate"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-chart-pie text-warning fa-3x"></i>
@@ -100,7 +100,7 @@ $this->title = 'Dashboard';
                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round" />
                                         </svg>423</h3>
-                                    <p class="mb-0">Visits</p>
+                                    <p class="mb-0"><?= Yii::t("app", "Visits"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="far fa-life-ring text-info fa-3x"></i>
@@ -118,7 +118,7 @@ $this->title = 'Dashboard';
         <section class="mb-4">
             <div class="card">
                 <div class="card-header py-3">
-                    <h5 class="mb-0 text-center"><strong>Main statistics chart</strong></h5>
+                    <h5 class="mb-0 text-center"><strong><?= Yii::t("app", "Main statistics chart"); ?></strong></h5>
                 </div>
                 <div class="card-body">
                     <?= ChartJs::widget([
@@ -146,7 +146,7 @@ $this->title = 'Dashboard';
                             <div class="d-flex justify-content-between px-md-1">
                                 <div>
                                     <h3 class="text-info">278</h3>
-                                    <p class="mb-0">New Posts</p>
+                                    <p class="mb-0"><?= Yii::t("app", "New Posts"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-book-open text-info fa-3x"></i>
@@ -167,7 +167,7 @@ $this->title = 'Dashboard';
                             <div class="d-flex justify-content-between px-md-1">
                                 <div>
                                     <h3 class="text-warning">156</h3>
-                                    <p class="mb-0">New Comments</p>
+                                    <p class="mb-0"><?= Yii::t("app", "New Comments"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="far fa-comments text-warning fa-3x"></i>
@@ -188,7 +188,7 @@ $this->title = 'Dashboard';
                             <div class="d-flex justify-content-between px-md-1">
                                 <div>
                                     <h3 class="text-success">64.89 %</h3>
-                                    <p class="mb-0">Bounce Rate</p>
+                                    <p class="mb-0"><?= Yii::t("app", "Bounce Rate"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-mug-hot text-success fa-3x"></i>
@@ -209,7 +209,7 @@ $this->title = 'Dashboard';
                             <div class="d-flex justify-content-between px-md-1">
                                 <div>
                                     <h3 class="text-danger">423</h3>
-                                    <p class="mb-0">Total Visits</p>
+                                    <p class="mb-0"><?= Yii::t("app", "Total Visits"); ?></p>
                                 </div>
                                 <div class="align-self-center">
                                     <i class="fas fa-map-signs text-danger fa-3x"></i>
@@ -240,8 +240,8 @@ $this->title = 'Dashboard';
                                         <i class="fas fa-pencil-alt text-info fa-3x me-4"></i>
                                     </div>
                                     <div>
-                                        <h4>Total Posts</h4>
-                                        <p class="mb-0">Monthly blog posts</p>
+                                        <h4><?= Yii::t("app", "Total Posts"); ?></h4>
+                                        <p class="mb-0"><?= Yii::t("app", "Monthly blog posts"); ?></p>
                                     </div>
                                 </div>
                                 <div class="align-self-center">
@@ -260,8 +260,8 @@ $this->title = 'Dashboard';
                                         <i class="far fa-comment-alt text-warning fa-3x me-4"></i>
                                     </div>
                                     <div>
-                                        <h4>Total Comments</h4>
-                                        <p class="mb-0">Monthly blog posts</p>
+                                        <h4><?= Yii::t("app", "Total Comments"); ?></h4>
+                                        <p class="mb-0"><?= Yii::t("app", ""); ?></p>
                                     </div>
                                 </div>
                                 <div class="align-self-center">
@@ -282,8 +282,8 @@ $this->title = 'Dashboard';
                                         <h2 class="h1 mb-0 me-4">$76,456.00</h2>
                                     </div>
                                     <div>
-                                        <h4>Total Sales</h4>
-                                        <p class="mb-0">Monthly Sales Amount</p>
+                                        <h4><?= Yii::t("app", "Total Sales"); ?></h4>
+                                        <p class="mb-0"><?= Yii::t("app", "Monthly Sales Amount"); ?></p>
                                     </div>
                                 </div>
                                 <div class="align-self-center">
@@ -302,8 +302,8 @@ $this->title = 'Dashboard';
                                         <h2 class="h1 mb-0 me-4">$36,000.00</h2>
                                     </div>
                                     <div>
-                                        <h4>Total Cost</h4>
-                                        <p class="mb-0">Monthly Cost</p>
+                                        <h4><?= Yii::t("app", "Total Cost"); ?></h4>
+                                        <p class="mb-0"><?= Yii::t("app", "Monthly Cost"); ?></p>
                                     </div>
                                 </div>
                                 <div class="align-self-center">

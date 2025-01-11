@@ -28,7 +28,7 @@ $product_list = Product::find()->select(['id', 'name', 'measurement'])->all();
 
     <div class="panel panel-default card mt-3">
         <div class="panel-heading card-header">
-            <h4 class="lead">Ingredients</h4>
+            <h4 class="lead"><?= Yii::t("app", "Ingredients"); ?></h4>
         </div>
 
         <div class="panel-body card-body">
@@ -56,7 +56,7 @@ $product_list = Product::find()->select(['id', 'name', 'measurement'])->all();
                 <?php foreach ($ingredientModels as $i => $modelIngredient): ?>
                     <div class="item panel panel-default col-lg-3"><!-- widgetBody -->
                         <div class="panel-heading">
-                            <h4 class="panel-title pull-left">Ingredient</h4>
+                            <h4 class="panel-title pull-left"><?= Yii::t("app", ""); ?></h4>
                             <div class="pull-right">
 
                             </div>

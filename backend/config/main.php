@@ -14,6 +14,7 @@ $params = array_merge(
 return [
     'id' => 'app-backend',
     'name' => 'MakeSell',
+    'language'=>'ko-KR',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -28,8 +29,21 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
-        'steppy' => [
-            'class' => Steppy::class
+        'formatter' => [
+            'locale' => 'en-US'
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+            ],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
