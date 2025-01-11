@@ -2,20 +2,20 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Invoice;
 use backend\models\InvoiceSearch;
 use backend\models\Order;
 use Mpdf\Mpdf;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
  */
-class InvoiceController extends Controller
+class InvoiceController extends BaseController
 {
     /**
      * @inheritDoc

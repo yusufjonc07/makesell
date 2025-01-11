@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\DynamicModel;
 use backend\models\Ingredient;
 use backend\models\Product;
@@ -10,7 +11,6 @@ use Exception;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 /**
  * RecipeController implements the CRUD actions for Recipe model.
  */
-class RecipeController extends Controller
+class RecipeController extends BaseController
 {
     /**
      * @inheritDoc

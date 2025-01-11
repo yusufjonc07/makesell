@@ -2,17 +2,17 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Supply;
 use backend\models\SupplySearch;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * SupplyController implements the CRUD actions for Supply model.
  */
-class SupplyController extends Controller
+class SupplyController extends BaseController
 {
     /**
      * @inheritDoc

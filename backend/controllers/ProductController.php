@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Ingredient;
 use backend\models\Product;
 use backend\models\ProductSearch;
@@ -15,7 +16,7 @@ use yii\web\UploadedFile;
 /**
  * ProductController implements the CRUD actions for Product model.
  */
-class ProductController extends Controller
+class ProductController extends BaseController
 {
     /**
      * @inheritDoc

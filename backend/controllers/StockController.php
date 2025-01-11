@@ -2,17 +2,17 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Stock;
 use backend\models\StockSearch;
 use Yii;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * StockController implements the CRUD actions for Stock model.
  */
-class StockController extends Controller
+class StockController extends BaseController
 {
     /**
      * @inheritDoc

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Customer;
 use backend\models\Invoice;
 use backend\models\Order;
@@ -11,13 +12,12 @@ use Yii;
 use yii\captcha\CaptchaAction;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\web\Response;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -83,7 +83,7 @@ class SiteController extends Controller
 
         $datasets = [
             [
-                'label' => "Production",
+                'label' => Yii::t('app', "Production"),
                 'backgroundColor' => "rgba(179,181,198,0.2)",
                 'borderColor' => "rgb(56, 63, 123)",
                 'pointBackgroundColor' => "rgba(179,181,198,1)",
@@ -93,7 +93,7 @@ class SiteController extends Controller
                 'data' => [65, 59, 90, 81, 56, 55, 40]
             ],
             [
-                'label' => "Sales",
+                'label' => Yii::t('app', "Sales"),
                 'backgroundColor' => "rgba(85, 164, 81, 0.55)",
                 'borderColor' => "rgb(58, 126, 93)",
                 'pointBackgroundColor' => "rgba(85, 164, 81, 0.55)",
@@ -103,7 +103,7 @@ class SiteController extends Controller
                 'data' => [28, 48, 40, 19, 96, 27, 100]
             ],
             [
-                'label' => "Supply",
+                'label' => Yii::t('app', "Supply"),
                 'backgroundColor' => "rgba(153, 164, 81, 0.55)",
                 'borderColor' => "rgb(115, 126, 58)",
                 'pointBackgroundColor' => "rgba(85, 164, 81, 0.55)",

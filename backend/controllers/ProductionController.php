@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\components\Steppy;
 use backend\models\Production;
 use backend\models\ProductionSearch;
@@ -17,7 +18,7 @@ use yii\web\UnprocessableEntityHttpException;
 /**
  * ProductionController implements the CRUD actions for Production model.
  */
-class ProductionController extends Controller
+class ProductionController extends BaseController
 {
     /**
      * @inheritDoc

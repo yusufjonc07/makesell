@@ -2,17 +2,17 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Customer;
 use backend\models\CustomerSearch;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * CustomerController implements the CRUD actions for Customer model.
  */
-class CustomerController extends Controller
+class CustomerController extends BaseController
 {
     /**
      * @inheritDoc

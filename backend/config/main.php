@@ -14,7 +14,7 @@ $params = array_merge(
 return [
     'id' => 'app-backend',
     'name' => 'MakeSell',
-    'language'=>'ko-KR',
+    'language' => 'ko-KR',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -65,7 +65,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-
+                '<language:\w{2}>/<controller>/<action>' => '<controller>/<action>',
+                '<language:\w{2}>' => 'site/index',
             ],
         ],
         'assetManager' => [

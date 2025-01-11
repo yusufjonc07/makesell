@@ -128,7 +128,7 @@ $this->title = Yii::t("app", "Dashboard");
                             'height' => 200,
                         ],
                         'data' => [
-                            'labels' => ["January", "February", "March", "April", "May", "June", "July"],
+                            'labels' => [Yii::t("app", "January"), Yii::t("app", "February"), Yii::t("app", "March"), Yii::t("app", "April"), Yii::t("app", "May"), Yii::t("app", "June"), Yii::t("app", "July")],
                             'datasets' => $datasets,
                         ]
                     ]);

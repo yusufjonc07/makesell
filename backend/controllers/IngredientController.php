@@ -2,16 +2,16 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Ingredient;
 use backend\models\IngredientSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * IngredientController implements the CRUD actions for Ingredient model.
  */
-class IngredientController extends Controller
+class IngredientController extends BaseController
 {
     /**
      * @inheritDoc

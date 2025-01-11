@@ -2,19 +2,19 @@
 
 namespace backend\controllers;
 
+use backend\components\BaseController;
 use backend\models\Customer;
 use backend\models\Order;
 use backend\models\OrderSearch;
 use backend\models\ProductSearch;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * OrderController implements the CRUD actions for Order model.
  */
-class OrderController extends Controller
+class OrderController extends BaseController
 {
     /**
      * @inheritDoc
