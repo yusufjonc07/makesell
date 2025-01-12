@@ -74,32 +74,6 @@ class InvoiceController extends BaseController
         ]);
     }
 
-    public function actionDownload($number)
-    {
-
-
-        $this->layout = 'blank';
-        $model = Invoice::findOne(['number' => $number]);
-
-        $html = $this->renderPartial('view', compact('model'));
-
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-        ]);
-        $mpdf->SetMargins(0, 0, 10);
-        $mpdf->SetDisplayMode('fullpage', 'two');
-
-
-        $mpdf->SetColumns(2);
-        $mpdf->WriteHTML($html);
-        $mpdf->AddColumn();
-        $mpdf->WriteHTML($html);
-        $mpdf->Output();
-        exit;
-    }
-
-
     /**
      * Creates a new Invoice model.
      * If creation is successful, the browser will be redirected to the 'view' page.
