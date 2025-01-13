@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use backend\models\Product;
 use Yii;
 use yii\web\Controller;
 
